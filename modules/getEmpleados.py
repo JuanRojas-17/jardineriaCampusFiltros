@@ -46,6 +46,7 @@ def getAllNombreApellidoPuestoEmpleadosNoRepresentatesDeVentas():
     return nombreApellidoPuesto
 
 def menu():
+ while True:
     print("""
         
     ____                        __              __        __                                   __               __          
@@ -60,6 +61,7 @@ def menu():
                             1. Informacion empleados con codigo de jefe
                             2. Informacion jefe
                             3. Informacion empleados no representantes de ventas
+                            0. Regresar
 """)
     
     opcion= int(input("\nSeleccione una de las opciones: "))
@@ -70,3 +72,5 @@ def menu():
         print(tabulate(getAllPuestoNombreApellidoEmailJefe(), headers="keys", tablefmt="github"))
     elif(opcion == 3):
         print(tabulate(getAllNombreApellidoPuestoEmpleadosNoRepresentatesDeVentas(), headers="keys", tablefmt="github" ))
+    elif(opcion == 0):
+        break

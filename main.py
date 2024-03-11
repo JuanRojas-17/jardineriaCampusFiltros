@@ -1,4 +1,3 @@
-
 from tabulate import tabulate
 
 import os
@@ -7,13 +6,16 @@ import modules.getClients as clientes
 import modules.getPedidos as pedidos
 import modules.getPagos as pagos
 import modules.getOficina as oficina
+import modules.getProducto as productos
 
 # print(tabulate(empleado.getAllNombreApellidoEmailJefe(7)))
 # print(clientes.getAllNombrePais("Spain"))
 
+# print(tabulate(producto.getAllStocksPriceGama)("Ornamentales", 100), headers="keys", tablefmt="github")
+
 if(__name__ == "__main__"):
-         os.system("clear")
-         print("""
+    while True:
+        print("""
         
     __  ___                    ____       _            _             __
    /  |/  /__  ____  __  __   / __ \_____(_)___  _____(_)___  ____ _/ /
@@ -23,25 +25,27 @@ if(__name__ == "__main__"):
                                                     /_/                
         
 
-                          1. Cliente
-                          2. Oficina
-                          3. Empleado
+                          1. Clientes
+                          2. Oficinas
+                          3. Empleados
                           4. Pedidos
-                          5. Pago
+                          5. Pagos
+                          6. Productos
+                          0. Salir
 
 """)
-try:
-   option = int(input("\nSeleccione una de las opciones: "))
-except ValueError:
-   print("Opcion incorrecta")
-else:
-   if(option == 1):
-      clientes.menu()
-   elif(option == 2):
-       oficina.menu()
-   elif(option == 3):
-       empleado.menu()
-   elif(option == 4):
-       pedidos.menu()
-   elif(option ==5):
-       pagos.menu()
+        option = int(input("\nSeleccione una de las opciones: "))
+        if(option == 1):
+          clientes.menu()
+        elif(option == 2):
+          oficina.menu()
+        elif(option == 3):
+          empleado.menu()
+        elif(option == 4):
+          pedidos.menu()
+        elif(option ==5):
+          pagos.menu()
+        elif(option == 6):
+           productos.menu
+        if(option == 0):
+          break

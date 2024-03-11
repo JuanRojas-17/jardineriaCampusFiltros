@@ -19,6 +19,7 @@ def getAllTiposDePagos():
     return tiposDePago
 
 def menu():
+ while True:
     print("""
         
     ____                        __              __        __                                          
@@ -32,6 +33,7 @@ def menu():
 
                             1. Pagos durante 2008 mediante PayPal
                             2. Informacion formas de pago
+                            0. Regresar
 
 """)
     
@@ -40,3 +42,5 @@ def menu():
         print(tabulate(getAllPagos2008Paypal(), headers="keys", tablefmt="github"))
     elif(opcion == 2):
         print(tabulate(getAllTiposDePagos(), headers="keys", tablefmt="github"))
+    elif(opcion == 0):
+        break

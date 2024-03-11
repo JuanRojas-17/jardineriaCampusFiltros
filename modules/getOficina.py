@@ -29,6 +29,7 @@ def getAllCiudadTelefono(pais):
         return ciudadTelefono
     
 def menu():
+ while True:
     print("""
         
     ____                        __              __        __                    _____      _                 
@@ -42,6 +43,7 @@ def menu():
 
                                    1. Informacion oficinas
                                    2. Informacion oficinas de España
+                                   0. Regresar
 
 """)
     
@@ -51,4 +53,6 @@ def menu():
     elif(opcion == 2):
         pais = "España"
         print(tabulate(getAllCiudadTelefono(pais), headers="keys", tablefmt="github"))
+    elif(opcion == 0):
+        break
     

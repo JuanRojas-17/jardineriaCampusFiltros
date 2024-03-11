@@ -11,18 +11,35 @@ def search():
     return clienteName
 
 def getOneClienteCodigo(codigo):
+    clientecode= []
     for val in cli.cliente:
-        if(val.get('codigo_cliente')==codigo):
-            return {
+        dataclient = {
             "codigo_cliente": val.get('codigo_cliente'),
-            "nombre_cliente": val.get('nombre_cliente')
-        }
+            "nombre_cliente": val.get('nombre_cliente'),
+            "nombre_contacto": val.get('nombre_contacto'),
+            "apellido_contacto": val.get("apellido_contacto"),
+            "telefono": val.get('telefono'),
+            "fax": val.get('fax')}
+        if(val.get('codigo_cliente') == codigo):
+            clientecode.append(dataclient)
+    return clientecode
+         
 
 def getAllClientCreditCiudad(limiteCredit, ciudad):
-    clienteCredic = list()
+    clienteCredic = []
     for val in cli.cliente:
+        dataclient = {
+            "codigo_cliente": val.get('codigo_cliente'),
+            "nombre_cliente": val.get('nombre_cliente'),
+            "nombre_contacto": val.get('nombre_contacto'),
+            "apellido_contacto": val.get("apellido_contacto"),
+            "telefono": val.get('telefono'),
+            "fax": val.get('fax'),
+            "limite_credito": val.get('limite_credito'),
+            "ciudad": val.get('ciudad')
+            }
         if(val.get('limit_credito') >= limiteCredit and val.get('ciudad') == ciudad):
-            clienteCredic.append(val)
+            clienteCredic.append(dataclient)
     return clienteCredic
 
 def getAllClientePaisRegionCiudad(pais, region=None, ciudad=None):
@@ -49,7 +66,23 @@ def getAllNombrePais():
             })
     return nombrePais
 
+def getAllInformacionCodigoEmpleado(codigo):
+    empleadoCodigo = []
+    for val in cli.cliente:
+        dataclient = {
+            "codigo_empleado_rep_ventas": val.get('codigo_empleado_rep_ventas'),
+            "nombre_cliente": val.get('nombre_cliente'),
+            "nombre_contacto": val.get('nombre_contacto'),
+            "apellido_contacto": val.get("apellido_contacto"),
+            "telefono": val.get('telefono'),
+            "fax": val.get('fax')}
+        if(val.get('codigo_') == codigo):
+            empleadoCodigo.append(dataclient)
+    return empleadoCodigo
+
+
 def menu():
+ while True:
     print("""
         
 
@@ -62,11 +95,20 @@ def menu():
         
 
                                    1. Clientes españoles
+                                   2. Informacion clientes segun codigo
+                                   3. Informacion clientes segun codigo de empleado
+                                   0. Regresar
 
 """)
     
     opcion= int(input("\nSeleccione una de las opciones: "))
     if(opcion == 1):
         print(tabulate(getAllNombrePais(), headers="keys", tablefmt="github"))
-    else:
-        print("Opcion incorrecta")
+    elif(opcion == 2):
+        codigo = int(input("Ingrese el codigo del cliente: "))
+        print(tabulate(getOneClienteCodigo(codigo), headers="keys", tablefmt="github"))
+    elif(opcion == 3):
+        codigo = int(input("Ingrese el codigo del empleado: "))
+        print(tabulate(getAllInformacionCodigoEmpleado(codigo), headers="keys", tablefmt="github"))
+    elif(opcion == 0):
+        break
