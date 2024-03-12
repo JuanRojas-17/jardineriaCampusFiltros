@@ -46,6 +46,6 @@ if(__name__ == "__main__"):
         elif(option ==5):
           pagos.menu()
         elif(option == 6):
-           productos.menu
+           productos.menu()
         if(option == 0):
           break
