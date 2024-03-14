@@ -1,12 +1,12 @@
-from tabulate import tabulate
-
-import os
+# from tabulate import tabulate
 import modules.getEmpleados as empleado
 import modules.getClients as clientes
 import modules.getPedidos as pedidos
 import modules.getPagos as pagos
 import modules.getOficina as oficina
-import modules.getProducto as productos
+import modules.getProducto as producto
+
+
 
 # print(tabulate(empleado.getAllNombreApellidoEmailJefe(7)))
 # print(clientes.getAllNombrePais("Spain"))
@@ -46,6 +46,6 @@ if(__name__ == "__main__"):
         elif(option ==5):
           pagos.menu()
         elif(option == 6):
-           productos.menu()
+           producto.menu()
         if(option == 0):
           break

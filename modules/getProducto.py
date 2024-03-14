@@ -1,12 +1,20 @@
 from tabulate import tabulate
-import storage.producto as pr
+import json
+import requests
+import modules.postProducto as psProducto
+import modules.getGamas as gG
+
 # Devuelve un listado con todos los productos que pertenecen a la gama Ornamentales
 # y que tienen mas de 100 unidades en stock. El listado debera estar ordenado por su precio de venta,
 # mostrando en primer lugar los de mayor precio.
+def getAllData():
+    peticion = requests.get("http://172.16.102.108:5501")
+    data = peticion.json()
+    return data
 
 def getAllStocksPriceGama(gama, stock):
     condiciones = []
-    for val in pr.producto:
+    for val in getAllData():
         if(val.get("gama") == gama and val.get("cantidad_en_stock") >= stock):
             condiciones.append(val)
 
@@ -38,7 +46,8 @@ def menu():
           /_/                                                        /_/                                                  
 
               1. Informacion productos de una misma gama con mas de 100 unidades en stock de manera descendente
-              2. Regresar
+              2. Guardar
+              3. Regresar
               
               """)
     opcion= int(input("\nSeleccione una de las opciones: "))
@@ -47,4 +56,18 @@ def menu():
         stock = int(input("Ingrese las unidades que desea mostrar: "))
         print(tabulate(getAllStocksPriceGama(gama, stock), headers="keys", tablefmt="github"))
     elif(opcion == 2):
+        producto = {
+         "codigo_producto": input("Ingrese el codigo del producto: "),
+         "nombre": input("Ingrese el nomnbre del producto: "),
+         "gama": gG.getAllNombre()[int(input("Seleccione la gama:\n"+"".join([f"\t{i}. {val}\n" for i, val in enumerate(gG.getAllNombre())])))],
+         "dimensiones": input("Ingrese las dimensiones del producto: "),
+         "proveedor": input("Ingrese el proveedor del producto: "),
+         "descripcion": input("Ingrese la descripcion del producto: "),
+         "cantidad_en_stock": int(input("Ingrese la cantidad en stock del producto: ")),
+         "precio_venta": int(input("Ingrese el precio de venta del producto: ")),
+         "precio_proveedor": int(input("Ingrese el precio del proveedor del prodcuto: "))
+        }
+        psProducto.postProducto(producto)
+        print("Producto Guardado")
+    elif(opcion == 3):
         break
