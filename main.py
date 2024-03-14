@@ -4,7 +4,9 @@ import modules.getClients as clientes
 import modules.getPedidos as pedidos
 import modules.getPagos as pagos
 import modules.getOficina as oficina
-import modules.getProducto as producto
+import modules.getProducto as Repproducto
+import modules.postProducto as CRUDproducto
+import os
 
 
 
@@ -13,8 +15,37 @@ import modules.getProducto as producto
 
 # print(tabulate(producto.getAllStocksPriceGama)("Ornamentales", 100), headers="keys", tablefmt="github")
 
+def menuProducto():
+   while True:
+      print("""
+
+    ____  _                            _     __               __                                     __                             __           __            
+   / __ )(_)__  ____ _   _____  ____  (_)___/ /___     ____ _/ /  ____ ___  ___  ____  __  __   ____/ /__     ____  _________  ____/ /_  _______/ /_____  _____
+  / __  / / _ \/ __ \ | / / _ \/ __ \/ / __  / __ \   / __ `/ /  / __ `__ \/ _ \/ __ \/ / / /  / __  / _ \   / __ \/ ___/ __ \/ __  / / / / ___/ __/ __ \/ ___/
+ / /_/ / /  __/ / / / |/ /  __/ / / / / /_/ / /_/ /  / /_/ / /  / / / / / /  __/ / / / /_/ /  / /_/ /  __/  / /_/ / /  / /_/ / /_/ / /_/ / /__/ /_/ /_/ (__  ) 
+/_____/_/\___/_/ /_/|___/\___/_/ /_/_/\__,_/\____/   \__,_/_/  /_/ /_/ /_/\___/_/ /_/\__,_/   \__,_/\___/  / .___/_/   \____/\__,_/\__,_/\___/\__/\____/____/  
+                                                                                                          /_/                                                  
+
+                          1. Reporte de los productos
+                          2. Guardar, Actualizar y Eliminar productos
+                          0. Regresar al menu principal
+
+                        """)
+      opcion = int(input("\nSeleccione una de las opciones: "))
+      if(opcion == 1):
+         Repproducto.menu()
+      if(opcion == 2):
+         CRUDproducto.menu()
+      elif(opcion == 0):
+         break
+
+
+
+
+
 if(__name__ == "__main__"):
     while True:
+        os.system("clear")
         print("""
         
     __  ___                    ____       _            _             __
@@ -46,6 +77,6 @@ if(__name__ == "__main__"):
         elif(option ==5):
           pagos.menu()
         elif(option == 6):
-           producto.menu()
-        if(option == 0):
+           menuProducto()
+        elif(option == 0):
           break
