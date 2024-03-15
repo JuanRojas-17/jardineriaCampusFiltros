@@ -2,6 +2,7 @@ from tabulate import tabulate
 import json
 import requests
 import os
+import re
 
 # Devuelve un listado con todos los productos que pertenecen a la gama Ornamentales
 # y que tienen mas de 100 unidades en stock. El listado debera estar ordenado por su precio de venta,
@@ -11,6 +12,11 @@ def getAllData():
     peticion = requests.get("http://172.16.102.108:5501")
     data = peticion.json()
     return data
+
+def getProductoCodigo(codigo):
+    for val in getAllData():
+        if(val.get('codigo_producto') == codigo):
+            return [val]
 
 def getAllStocksPriceGama(gama, stock):
     condiciones = []
@@ -49,10 +55,13 @@ def menu():
               0. Atras
               
               """)
-    opcion= int(input("\nSeleccione una de las opciones: "))
-    if(opcion == 1):
-        gama = input("Ingrese la gama que deseas filtrar: ")
-        stock = int(input("Ingrese las unidades que desea mostrar: "))
-        print(tabulate(getAllStocksPriceGama(gama, stock), headers="keys", tablefmt="github"))
-    elif(opcion == 0):
-        break
+    opcion = input("\nSeleccione una de las opciones: ")
+    if(re.match(r'[0-9]+$', opcion) is not None):
+         opcion = int(opcion)
+         if(opcion>=0 and opcion<=6):
+            if(opcion == 1):
+                gama = input("Ingrese la gama que deseas filtrar: ")
+                stock = int(input("Ingrese las unidades que desea mostrar: "))
+                print(tabulate(getAllStocksPriceGama(gama, stock), headers="keys", tablefmt="github"))
+            elif(opcion == 0):
+                break

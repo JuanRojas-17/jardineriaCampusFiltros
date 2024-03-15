@@ -1,6 +1,7 @@
 import storage.pedido as pe
 from datetime import datetime
 from tabulate import tabulate
+import re
 
 def getAllEstadoPedidos():
     estadoPedidos = []
@@ -93,16 +94,19 @@ def menu():
                             0. Regresar
 
 """)
-    opcion= int(input("\nSeleccione una de las opciones: "))
-    if(opcion == 1):
-        print(tabulate(getAllEstadoPedidos(), headers="keys", tablefmt="github"))
-    elif(opcion == 2):
-        print(tabulate(getAllCodigoClienteFechaEsperaEntregaPedidosAtrasados(), headers="keys", tablefmt="github"))
-    elif(opcion == 3):
-        print(tabulate(getAllCodigoClienteFechaEsperaEntregaPedidos2Dias(), headers="keys", tablefmt="github"))
-    elif(opcion == 4):
-        print(tabulate(getAllPedidosRechazados2009(), headers="keys", tablefmt="github"))
-    elif(opcion == 5):
-        print(tabulate(getAllPedidosEntregadosEnero(), headers="keys", tablefmt="github"))
-    elif(opcion == 0):
-        break
+    opcion = input("\nSeleccione una de las opciones: ")
+    if(re.match(r'[0-9]+$', opcion) is not None):
+         opcion = int(opcion)
+         if(opcion>=0 and opcion<=6):
+            if(opcion == 1):
+                print(tabulate(getAllEstadoPedidos(), headers="keys", tablefmt="github"))
+            elif(opcion == 2):
+                print(tabulate(getAllCodigoClienteFechaEsperaEntregaPedidosAtrasados(), headers="keys", tablefmt="github"))
+            elif(opcion == 3):
+                print(tabulate(getAllCodigoClienteFechaEsperaEntregaPedidos2Dias(), headers="keys", tablefmt="github"))
+            elif(opcion == 4):
+                print(tabulate(getAllPedidosRechazados2009(), headers="keys", tablefmt="github"))
+            elif(opcion == 5):
+                print(tabulate(getAllPedidosEntregadosEnero(), headers="keys", tablefmt="github"))
+            elif(opcion == 0):
+                break

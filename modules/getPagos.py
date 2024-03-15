@@ -2,6 +2,7 @@ import storage.pago as pa
 from datetime import datetime
 from tabulate import tabulate
 import os
+import re
 
 def getAllPagos2008Paypal():
     pagos2008Paypal = []
@@ -38,10 +39,13 @@ def menu():
 
 """)
     
-    opcion= int(input("\nSeleccione una de las opciones: "))
-    if(opcion == 1):
-        print(tabulate(getAllPagos2008Paypal(), headers="keys", tablefmt="github"))
-    elif(opcion == 2):
-        print(tabulate(getAllTiposDePagos(), headers="keys", tablefmt="github"))
-    elif(opcion == 0):
-        break
+    opcion = input("\nSeleccione una de las opciones: ")
+    if(re.match(r'[0-9]+$', opcion) is not None):
+         opcion = int(opcion)
+         if(opcion>=0 and opcion<=6):
+            if(opcion == 1):
+                print(tabulate(getAllPagos2008Paypal(), headers="keys", tablefmt="github"))
+            elif(opcion == 2):
+                print(tabulate(getAllTiposDePagos(), headers="keys", tablefmt="github"))
+            elif(opcion == 0):
+                break

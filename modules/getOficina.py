@@ -1,5 +1,6 @@
 import storage.oficina as of
 from tabulate import tabulate
+import re
 
 # Devuelve un listado con el codigo de
 # oficina y la ciudad donde hay oficinas.
@@ -47,12 +48,15 @@ def menu():
 
 """)
     
-    opcion= int(input("\nSeleccione una de las opciones: "))
-    if(opcion == 1):
-        print(tabulate(getAllCodigoCiudad(), headers="keys", tablefmt="github"))
-    elif(opcion == 2):
-        pais = "España"
-        print(tabulate(getAllCiudadTelefono(pais), headers="keys", tablefmt="github"))
-    elif(opcion == 0):
-        break
+    opcion = input("\nSeleccione una de las opciones: ")
+    if(re.match(r'[0-9]+$', opcion) is not None):
+         opcion = int(opcion)
+         if(opcion>=0 and opcion<=6):
+            if(opcion == 1):
+                print(tabulate(getAllCodigoCiudad(), headers="keys", tablefmt="github"))
+            elif(opcion == 2):
+                pais = "España"
+                print(tabulate(getAllCiudadTelefono(pais), headers="keys", tablefmt="github"))
+            elif(opcion == 0):
+                break
     

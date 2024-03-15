@@ -7,6 +7,7 @@ import modules.getOficina as oficina
 import modules.getProducto as Repproducto
 import modules.postProducto as CRUDproducto
 import os
+import re
 
 
 
@@ -31,13 +32,16 @@ def menuProducto():
                           0. Regresar al menu principal
 
                         """)
-      opcion = int(input("\nSeleccione una de las opciones: "))
-      if(opcion == 1):
-         Repproducto.menu()
-      if(opcion == 2):
-         CRUDproducto.menu()
-      elif(opcion == 0):
-         break
+      opcion = input("\nSeleccione una de las opciones: ")
+      if(re.match(r'[0-9]+$', opcion) is not None):
+         opcion = int(opcion)
+         if(opcion>=0 and opcion<=6):
+            if(opcion == 1):
+              Repproducto.menu()
+            if(opcion == 2):
+              CRUDproducto.menu()
+            elif(opcion == 0):
+              break
 
 
 
@@ -65,18 +69,22 @@ if(__name__ == "__main__"):
                           0. Salir
 
 """)
-        option = int(input("\nSeleccione una de las opciones: "))
-        if(option == 1):
-          clientes.menu()
-        elif(option == 2):
-          oficina.menu()
-        elif(option == 3):
-          empleado.menu()
-        elif(option == 4):
-          pedidos.menu()
-        elif(option ==5):
-          pagos.menu()
-        elif(option == 6):
-           menuProducto()
-        elif(option == 0):
-          break
+
+        option = input("\nSeleccione una de las opciones: ")
+        if(re.match(r'[0-9]+$', option) is not None):
+         option = int(option)
+         if(option>=0 and option<=6):
+           if(option == 1):
+            clientes.menu()
+           elif(option == 2):
+            oficina.menu()
+           elif(option == 3):
+             empleado.menu()
+           elif(option == 4):
+              pedidos.menu()
+           elif(option ==5):
+             pagos.menu()
+           elif(option == 6):
+             menuProducto()
+           elif(option == 0):
+            break

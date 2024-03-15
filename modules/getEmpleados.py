@@ -1,5 +1,6 @@
 import storage.empleado as em
 from tabulate import tabulate
+import re
 
 # Devuelve un lista con el nombre, apellidos y email
 # de los empleados cuyo jefe tiene un codigo de jefe igual a 7.
@@ -64,13 +65,16 @@ def menu():
                             0. Regresar
 """)
     
-    opcion= int(input("\nSeleccione una de las opciones: "))
-    if(opcion == 1):
-        codigo = int(input("Introduzca el codigo de jefe: "))
-        print(tabulate(getAllNombreApellidoEmailJefe(codigo), headers="keys", tablefmt="github"))
-    elif(opcion == 2):
-        print(tabulate(getAllPuestoNombreApellidoEmailJefe(), headers="keys", tablefmt="github"))
-    elif(opcion == 3):
-        print(tabulate(getAllNombreApellidoPuestoEmpleadosNoRepresentatesDeVentas(), headers="keys", tablefmt="github" ))
-    elif(opcion == 0):
-        break
+    opcion = input("\nSeleccione una de las opciones: ")
+    if(re.match(r'[0-9]+$', opcion) is not None):
+         opcion = int(opcion)
+         if(opcion>=0 and opcion<=6):
+            if(opcion == 1):
+                codigo = int(input("Introduzca el codigo de jefe: "))
+                print(tabulate(getAllNombreApellidoEmailJefe(codigo), headers="keys", tablefmt="github"))
+            elif(opcion == 2):
+                print(tabulate(getAllPuestoNombreApellidoEmailJefe(), headers="keys", tablefmt="github"))
+            elif(opcion == 3):
+                print(tabulate(getAllNombreApellidoPuestoEmpleadosNoRepresentatesDeVentas(), headers="keys", tablefmt="github" ))
+            elif(opcion == 0):
+                break

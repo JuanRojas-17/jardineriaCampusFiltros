@@ -1,5 +1,6 @@
 import storage.cliente as cli
 from tabulate import tabulate
+import re
 
 def search():
     clienteName = []
@@ -101,14 +102,17 @@ def menu():
 
 """)
     
-    opcion= int(input("\nSeleccione una de las opciones: "))
-    if(opcion == 1):
-        print(tabulate(getAllNombrePais(), headers="keys", tablefmt="github"))
-    elif(opcion == 2):
-        codigo = int(input("Ingrese el codigo del cliente: "))
-        print(tabulate(getOneClienteCodigo(codigo), headers="keys", tablefmt="github"))
-    elif(opcion == 3):
-        codigo = int(input("Ingrese el codigo del empleado: "))
-        print(tabulate(getAllInformacionCodigoEmpleado(codigo), headers="keys", tablefmt="github"))
-    elif(opcion == 0):
-        break
+    opcion = input("\nSeleccione una de las opciones: ")
+    if(re.match(r'[0-9]+$', opcion) is not None):
+         opcion = int(opcion)
+         if(opcion>=0 and opcion<=6):
+            if(opcion == 1):
+                print(tabulate(getAllNombrePais(), headers="keys", tablefmt="github"))
+            elif(opcion == 2):
+                codigo = int(input("Ingrese el codigo del cliente: "))
+                print(tabulate(getOneClienteCodigo(codigo), headers="keys", tablefmt="github"))
+            elif(opcion == 3):
+                codigo = int(input("Ingrese el codigo del empleado: "))
+                print(tabulate(getAllInformacionCodigoEmpleado(codigo), headers="keys", tablefmt="github"))
+            elif(opcion == 0):
+                break
