@@ -1,12 +1,20 @@
-import storage.pago as pa
+import json
+import requests
+import re
 from datetime import datetime
 from tabulate import tabulate
 import os
 import re
 
+def dataPagos():
+    peticion = requests.get("http://192.168.10.13:5505")
+    data = peticion.json()
+    return data
+
 def getAllPagos2008Paypal():
     pagos2008Paypal = []
-    for val in pa.pago:
+    data = dataPagos
+    for val in data:
         fecha1 = val.get("fecha_pago")
         if val.get("forma_pago") == "PayPal" and fecha1.startswith("2008"):
             pagos2008Paypal.append(val)
@@ -14,7 +22,8 @@ def getAllPagos2008Paypal():
 
 def getAllTiposDePagos():
     tiposDePago = set()
-    for val in pa.pago:
+    data = dataPagos
+    for val in data:
         tipos = val.get("forma_pago")
         if tipos not in tiposDePago:
             tiposDePago.add(tipos)

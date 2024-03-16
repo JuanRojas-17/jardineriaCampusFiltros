@@ -1,10 +1,17 @@
-import storage.cliente as cli
+import requests
 from tabulate import tabulate
 import re
+import json
 
-def search():
+def dataClientes():
+    peticion = requests.get("http://192.168.10.13:5502")
+    data = peticion.json()
+    return data
+
+def search():   
     clienteName = []
-    for val in cli.cliente:
+    data = dataClientes()
+    for val in data:
         clienteName.append({
             "codigo_cliente": val.get('codigo_cliente'),
             "nombre_cliente": val.get('nombre_cliente')
@@ -13,7 +20,8 @@ def search():
 
 def getOneClienteCodigo(codigo):
     clientecode= []
-    for val in cli.cliente:
+    data = dataClientes()
+    for val in data:
         dataclient = {
             "codigo_cliente": val.get('codigo_cliente'),
             "nombre_cliente": val.get('nombre_cliente'),
@@ -28,7 +36,8 @@ def getOneClienteCodigo(codigo):
 
 def getAllClientCreditCiudad(limiteCredit, ciudad):
     clienteCredic = []
-    for val in cli.cliente:
+    data = dataClientes()
+    for val in data:
         dataclient = {
             "codigo_cliente": val.get('codigo_cliente'),
             "nombre_cliente": val.get('nombre_cliente'),
@@ -45,7 +54,8 @@ def getAllClientCreditCiudad(limiteCredit, ciudad):
 
 def getAllClientePaisRegionCiudad(pais, region=None, ciudad=None):
     clientZone = list()
-    for val in cli.cliente:
+    data = dataClientes()
+    for val in data:
         if(
            val.get('pais') == pais and 
            (val.get('region') == region or val.get('region') == None) or
@@ -59,7 +69,8 @@ def getAllClientePaisRegionCiudad(pais, region=None, ciudad=None):
 
 def getAllNombrePais():
     nombrePais = []
-    for val in cli.cliente:
+    data = dataClientes()
+    for val in data:
         if(val.get("pais") == "Spain" ):
             nombrePais.append({
                 "nombre_cliente": val.get("nombre_cliente"),
@@ -69,7 +80,8 @@ def getAllNombrePais():
 
 def getAllInformacionCodigoEmpleado(codigo):
     empleadoCodigo = []
-    for val in cli.cliente:
+    data = dataClientes()
+    for val in data:
         dataclient = {
             "codigo_empleado_rep_ventas": val.get('codigo_empleado_rep_ventas'),
             "nombre_cliente": val.get('nombre_cliente'),

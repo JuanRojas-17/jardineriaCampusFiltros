@@ -1,11 +1,18 @@
-import storage.pedido as pe
+import json
+import requests
 from datetime import datetime
 from tabulate import tabulate
 import re
 
+def dataPedidos():
+    peticion = requests.get("http://192.168.10.13:5506")
+    data = peticion.json()
+    return data
+
 def getAllEstadoPedidos():
     estadoPedidos = []
-    for val in pe.pedido:
+    data = dataPedidos
+    for val in data:
         estadoPedidos.append({
             "estado": val.get("estado"),
             "codigo_pedido": val.get("codigo_pedido")
@@ -14,7 +21,8 @@ def getAllEstadoPedidos():
 
 def getAllCodigoClienteFechaEsperaEntregaPedidosAtrasados():
     pedidosAtrasados = []
-    for val in pe.pedido:
+    data = dataPedidos
+    for val in data:
         if (val.get("estado") == "Entregado" and val.get("fecha_entrega") == None):
             val["fecha_entrega"] = val.get("fecha_esperada")
             
@@ -36,7 +44,8 @@ def getAllCodigoClienteFechaEsperaEntregaPedidosAtrasados():
 
 def getAllCodigoClienteFechaEsperaEntregaPedidos2Dias():
     pedidos2Dias = []
-    for val in pe.pedido:
+    data = dataPedidos
+    for val in data:
         if (val.get("estado") == "Entregado" and val.get("fecha_entrega") == None):
             val["fecha_entrega"] = val.get("fecha_esperada")
             
@@ -58,7 +67,8 @@ def getAllCodigoClienteFechaEsperaEntregaPedidos2Dias():
 
 def getAllPedidosRechazados2009():
     pedidosRechazados2009 = []
-    for val in pe.pedido:
+    data = dataPedidos
+    for val in data:
         fecha1 = val.get("fecha_esperada")
         if val.get("estado") == "Rechazado" and fecha1.startswith('2009'):
             pedidosRechazados2009.append(val)
@@ -66,7 +76,8 @@ def getAllPedidosRechazados2009():
 
 def getAllPedidosEntregadosEnero():
     Enero = []
-    for val in pe.pedido:
+    data = dataPedidos
+    for val in data:
         if (val.get("estado") == "Entregado" and val.get("fecha_entrega") != None):
             fecha1 = "/".join(val.get("fecha_entrega").split("-")[::-1])
             start = datetime.strptime(fecha1, "%d/%m/%Y")

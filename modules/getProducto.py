@@ -4,23 +4,26 @@ import requests
 import os
 import re
 
+def getAllData():
+    peticion = requests.get("http://192.168.10.13:5501")
+    data = peticion.json()
+    return data
+
 # Devuelve un listado con todos los productos que pertenecen a la gama Ornamentales
 # y que tienen mas de 100 unidades en stock. El listado debera estar ordenado por su precio de venta,
 # mostrando en primer lugar los de mayor precio.
 
-def getAllData():
-    peticion = requests.get("http://172.16.102.108:5501")
-    data = peticion.json()
-    return data
 
 def getProductoCodigo(codigo):
-    for val in getAllData():
+    data = getAllData()
+    for val in data:
         if(val.get('codigo_producto') == codigo):
             return [val]
 
 def getAllStocksPriceGama(gama, stock):
     condiciones = []
-    for val in getAllData():
+    data = getAllData()
+    for val in data:
         if(val.get("gama") == gama and val.get("cantidad_en_stock") >= stock):
             condiciones.append(val)
 

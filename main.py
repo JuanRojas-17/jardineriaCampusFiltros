@@ -46,7 +46,6 @@ def menuProducto():
 
 
 
-
 if(__name__ == "__main__"):
     while True:
         os.system("clear")
