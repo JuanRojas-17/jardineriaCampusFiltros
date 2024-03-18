@@ -203,8 +203,6 @@ def menuGamas():
                                                                                                            /____/                              
 
 
-
-
                                               1. Reporte de las gamas
                                               2. Guardar, Actualizar y Eliminar gamas
                                               0. Regresar al menu principal                                                                                                                          
@@ -247,7 +245,7 @@ if(__name__ == "__main__"):
         option = input("\nSeleccione una de las opciones: ")
         if(re.match(r'[0-9]+$', option) is not None):
          option = int(option)
-         if(option>=0 and option<=6):
+         if(option>=0 and option<=7):
            if(option == 1):
             menuCliente()
            elif(option == 2):

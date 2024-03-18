@@ -3,6 +3,8 @@ import requests
 import os
 from tabulate import tabulate
 import re
+import modules.getProducto as gP
+
 
 def postProducto():
     # json-server storage/pedido.json -b 5501
@@ -87,6 +89,25 @@ if __name__ == "__main__":
     #    res = peticion.json()
     #    res["Mensaje"] = "Producto Guardado"
     #    return [res]
+
+def deleteProducto(id):
+    data = gP.getProductoCodigo(id)
+    if(len(data)):
+        peticion = requests.delete(f"http://192.168.10.13:5501/productos/{id}")
+        if(peticion.status_code == 204):
+            data.append({"message": "producto eliminado correctamete"})
+            return{
+                "body": data,
+                "status": peticion.status_code,
+            }
+    else:
+        return {
+            "body":[{
+                "message":"producto no encontrado",
+                "id": id
+            }],
+            "status": 400,
+        }
 
 def menu():
  while True:
