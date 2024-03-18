@@ -3,90 +3,73 @@ import requests
 import os
 from tabulate import tabulate
 import re
-import modules.getProducto as gPr
-import modules.getGamas as gG
-
 
 def postProducto():
-    # json-server storage/producto.json -b 5501
-    producto = dict()
+    # json-server storage/pedido.json -b 5501
+    producto = {}
     while True:
         try:
-            if not producto.get("codigo_producto"):
-                codigo = input("Ingrese el codigo del producto: " )
-                if re.match(r'^[A-Z]{2}-[0-9]{3}$', codigo):
-                    data = gPr.getProductoCodigo(codigo)
-                    if data:
-                        print(tabulate(data, headers="keys", tablefmt="github"))
-                        raise Exception("El codigo producto ya existe")
-                    else:
-                        producto["codigo_producto"] = codigo
-                else:
-                    raise Exception("El codigo producto no cumple con el estandar establecido")
-            
-            if not producto.get("nombre"):
-                nombre = input("Ingrese el nombre del producto: ")
-                if nombre:
-                    producto["nombre"] = nombre
-                else:
-                    raise Exception("El nombre del producto no puede estar vacío")
-                
-            if not producto.get("gama"):
-                gama = input("Seleccione la gama del producto:\n" + "\n".join([f"{i}. {val}" for i, val in enumerate(gG.getAllNombre())]) + "\n")
-                if gama.isdigit() and 0 <= int(gama) < len(gG.getAllNombre()):
-                    producto["gama"] = gG.getAllNombre()[int(gama)]
-                else:
-                    raise Exception("La gama seleccionada no es válida")
-            
-            if not producto.get("dimensiones"):
-                dimensiones = input("Ingrese las dimensiones del producto: ")
-                if dimensiones:
-                    producto["dimensiones"] = dimensiones
-                else:
-                    raise Exception("Las dimensiones del producto no pueden estar vacías")
-                
-            if not producto.get("proveedor"):
-                proveedor = input("Ingrese el proveedor del producto: ")
-                if proveedor:
-                    producto["proveedor"] = proveedor
-                else:
-                    raise Exception("El proveedor del producto no puede estar vacío")
-            
-            if not producto.get("descripcion"):
-                descripcion = input("Ingrese la descripcion del producto: ")
-                if descripcion:
-                    producto["descripcion"] = descripcion
-                else:
-                    raise Exception("La descripción del producto no puede estar vacía")
-            
-            if not producto.get("cantidad_en_stock"):
-                stock = input("Ingrese la cantidad en stock del producto: ")
-                if stock.isdigit():
-                    producto["cantidad_en_stock"] = int(stock)
-                else:
-                    raise Exception("La cantidad en stock debe ser un número entero")
-            
-            if not producto.get("precio_venta"):
-                precio_venta = input("Ingrese el precio de venta del producto: ")
-                if precio_venta.isdigit():
-                    producto["precio_venta"] = int(precio_venta)
-                else:
-                    raise Exception("El precio de venta debe ser un número entero")
-            
-            if not producto.get("precio_proveedor"):
-                precio_proveedor = input("Ingrese el precio del proveedor del producto: ")
-                if precio_proveedor.isdigit():
-                    producto["precio_proveedor"] = int(precio_proveedor)
-                else:
-                    raise Exception("El precio del proveedor debe ser un número entero")
-            
-            print("Producto agregado exitosamente:")
-            print(producto)
+            codigo = input("Ingrese el código del producto (formato: AA-111): ")
+            if not re.match(r'^[A-Z]{2}-\d{3}$', codigo):
+                raise ValueError("El código del producto debe tener el formato AA-111.")
+            producto["codigo_producto"] = codigo
+
+            nombre = input("Ingrese el nombre del producto: ")
+            if not nombre:
+                raise ValueError("El nombre del producto no puede estar vacío.")
+            producto["nombre"] = nombre
+
+            print("Seleccione la gama del producto:")
+            print("1. Ornamentales")
+            print("2. Herramientas")
+            print("3. Aromáticas")
+            opcion_gama = input("Ingrese el número correspondiente a la gama: ")
+            if opcion_gama == "1":
+                gama = "Ornamentales"
+            elif opcion_gama == "2":
+                gama = "Herramientas"
+            elif opcion_gama == "3":
+                gama = "Aromáticas"
+            else:
+                raise ValueError("Opción de gama inválida.")
+            producto["gama"] = gama
+
+            dimensiones = input("Ingrese las dimensiones del producto: ")
+            producto["dimensiones"] = dimensiones
+
+            proveedor = input("Ingrese el proveedor del producto: ")
+            if not proveedor:
+                raise ValueError("El proveedor del producto no puede estar vacío.")
+            producto["proveedor"] = proveedor
+
+            descripcion = input("Ingrese la descripción del producto: ")
+            producto["descripcion"] = descripcion
+
+            cantidad_en_stock = int(input("Ingrese la cantidad en stock del producto: "))
+            if cantidad_en_stock <= 0:
+                raise ValueError("La cantidad en stock debe ser un número entero mayor que cero.")
+            producto["cantidad_en_stock"] = cantidad_en_stock
+
+            precio_venta = float(input("Ingrese el precio de venta del producto: "))
+            if precio_venta <= 0:
+                raise ValueError("El precio de venta debe ser un número positivo.")
+            producto["precio_venta"] = precio_venta
+
+            precio_proveedor = float(input("Ingrese el precio del proveedor del producto: "))
+            if precio_proveedor <= 0:
+                raise ValueError("El precio del proveedor debe ser un número positivo.")
+            producto["precio_proveedor"] = precio_proveedor
+
             break
         
-        except Exception as error:
-            print(error)
-postProducto()
+        except ValueError as error:
+            print("Error:", error)
+            print("Por favor, ingrese los datos correctamente.")
+
+    print("Producto ingresado con éxito:", producto)
+
+if __name__ == "__main__":
+    postProducto()
 
    #     producto = {
    #         "codigo_producto": input("Ingrese el codigo del producto: "),

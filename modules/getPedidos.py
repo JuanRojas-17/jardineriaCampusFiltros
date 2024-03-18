@@ -11,7 +11,7 @@ def dataPedidos():
 
 def getAllEstadoPedidos():
     estadoPedidos = []
-    data = dataPedidos
+    data = dataPedidos()
     for val in data:
         estadoPedidos.append({
             "estado": val.get("estado"),
@@ -21,7 +21,7 @@ def getAllEstadoPedidos():
 
 def getAllCodigoClienteFechaEsperaEntregaPedidosAtrasados():
     pedidosAtrasados = []
-    data = dataPedidos
+    data = dataPedidos()
     for val in data:
         if (val.get("estado") == "Entregado" and val.get("fecha_entrega") == None):
             val["fecha_entrega"] = val.get("fecha_esperada")
@@ -44,7 +44,7 @@ def getAllCodigoClienteFechaEsperaEntregaPedidosAtrasados():
 
 def getAllCodigoClienteFechaEsperaEntregaPedidos2Dias():
     pedidos2Dias = []
-    data = dataPedidos
+    data = dataPedidos()
     for val in data:
         if (val.get("estado") == "Entregado" and val.get("fecha_entrega") == None):
             val["fecha_entrega"] = val.get("fecha_esperada")
@@ -67,7 +67,7 @@ def getAllCodigoClienteFechaEsperaEntregaPedidos2Dias():
 
 def getAllPedidosRechazados2009():
     pedidosRechazados2009 = []
-    data = dataPedidos
+    data = dataPedidos()
     for val in data:
         fecha1 = val.get("fecha_esperada")
         if val.get("estado") == "Rechazado" and fecha1.startswith('2009'):
@@ -76,7 +76,7 @@ def getAllPedidosRechazados2009():
 
 def getAllPedidosEntregadosEnero():
     Enero = []
-    data = dataPedidos
+    data = dataPedidos()
     for val in data:
         if (val.get("estado") == "Entregado" and val.get("fecha_entrega") != None):
             fecha1 = "/".join(val.get("fecha_entrega").split("-")[::-1])

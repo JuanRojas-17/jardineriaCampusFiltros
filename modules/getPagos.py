@@ -13,7 +13,7 @@ def dataPagos():
 
 def getAllPagos2008Paypal():
     pagos2008Paypal = []
-    data = dataPagos
+    data = dataPagos()
     for val in data:
         fecha1 = val.get("fecha_pago")
         if val.get("forma_pago") == "PayPal" and fecha1.startswith("2008"):
@@ -22,7 +22,7 @@ def getAllPagos2008Paypal():
 
 def getAllTiposDePagos():
     tiposDePago = set()
-    data = dataPagos
+    data = dataPagos()
     for val in data:
         tipos = val.get("forma_pago")
         if tipos not in tiposDePago:
@@ -51,10 +51,10 @@ def menu():
     opcion = input("\nSeleccione una de las opciones: ")
     if(re.match(r'[0-9]+$', opcion) is not None):
          opcion = int(opcion)
-         if(opcion>=0 and opcion<=6):
+         if(opcion>=0 and opcion<=2):
             if(opcion == 1):
-                print(tabulate(getAllPagos2008Paypal(), headers="keys", tablefmt="github"))
+                print(getAllPagos2008Paypal())
             elif(opcion == 2):
-                print(tabulate(getAllTiposDePagos(), headers="keys", tablefmt="github"))
+                print(getAllTiposDePagos())
             elif(opcion == 0):
                 break

@@ -6,34 +6,41 @@ import re
 import modules.getPagos as gPa
 
 def postPago():
-    # json-server storage/pago.json -b 5505
-    pago = dict()
+    # json-server storage/pedido.json -b 5505
+    pago = {}
     while True:
-     try:
-        if(not pago.get("codigo_cliente")):
-           codigo = input("Ingrese el codigo del cliente: " )
-           if(re.match(r'^[A-Z]{2}-[0-9]{3}$', codigo) is not None):
-              data = gPa.getPagoCodigo(codigo)
-              if(data):
-                  print(tabulate(data, headers="keys", tablefmt="github"))
-                  raise Exception("El codigo del cliente ya existe")
-              else:
-                   pago["codigo_cliente"] = codigo
-           else:
-                raise Exception("El codigo del cliente no cumple con el estandar establecido")
-           
-        if(not pago.get("forma_pago")):
-            formaPago = input("Ingrese la forma de pago: ")
-            if(re.match(r'^[A-Z]{2}-[0-9]{3}$', codigo) is not None):
-                pago["forma_pago"] = formaPago
-                break
-            else:
-                raise Exception("La forma de pago no cumple con el estandar establecido")
-            
-     except Exception as error:
-        print(error)
+        try:
+            codigo_cliente = int(input("Ingrese el código del cliente (número entero positivo): "))
+            if codigo_cliente <= 0:
+                raise ValueError("El código del cliente debe ser un número entero positivo.")
+            pago["codigo_cliente"] = codigo_cliente
 
-    print(pago)
+            forma_pago = input("Ingrese la forma de pago: ")
+            pago["forma_pago"] = forma_pago
+
+            id_transaccion = input("Ingrese el ID de transacción: ")
+            pago["id_transaccion"] = id_transaccion
+
+            fecha_pago = input("Ingrese la fecha de pago (formato: YYYY-MM-DD): ")
+            if not re.match(r'^\d{4}-\d{2}-\d{2}$', fecha_pago):
+                raise ValueError("Formato de fecha incorrecto. Debe ser YYYY-MM-DD.")
+            pago["fecha_pago"] = fecha_pago
+
+            total = float(input("Ingrese el monto total del pago (número positivo): "))
+            if total <= 0:
+                raise ValueError("El monto total debe ser un número positivo.")
+            pago["total"] = total
+
+            break
+        
+        except ValueError as error:
+            print("Error:", error)
+            print("Por favor, ingrese los datos correctamente.")
+
+    print("Pago ingresado con éxito:", pago)
+
+if __name__ == "__main__":
+    postPago()
 
 def menu():
  while True:

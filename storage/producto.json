@@ -1,49 +1,5 @@
 [
- {
-  "codigo_producto": "11679",
-  "nombre": "Sierra de Poda 400MM",
-  "gama": "Herramientas",
-  "dimensiones": "0,258",
-  "proveedor": "HiperGarden Tools",
-  "descripcion": "Gracias a la poda se consigue manipular un poco la naturaleza, dándole la forma que más nos guste. Este trabajo básico de jardinería también facilita que las plantas crezcan de un modo más equilibrado, y que las flores y los frutos vuelvan cada año con regularidad. Lo mejor es dar forma cuando los ejemplares son jóvenes, de modo que exijan pocos cuidados cuando sean adultos. Además de saber cuándo y cómo hay que podar, tener unas herramientas adecuadas para esta labor es también de vital importancia.",
-  "cantidad_en_stock": 15,
-  "precio_venta": 14,
-  "precio_proveedor": 11
- },
- {
-  "codigo_producto": "21636",
-  "nombre": "Pala",
-  "gama": "Herramientas",
-  "dimensiones": "0,156",
-  "proveedor": "HiperGarden Tools",
-  "descripcion": "Palas de acero con cresta de corte en la punta para cortar bien el terreno. Buena penetración en tierras muy compactas.",
-  "cantidad_en_stock": 15,
-  "precio_venta": 14,
-  "precio_proveedor": 13
- },
- {
-  "codigo_producto": "22225",
-  "nombre": "Rastrillo de Jardín",
-  "gama": "Herramientas",
-  "dimensiones": "1,064",
-  "proveedor": "HiperGarden Tools",
-  "descripcion": "Fabuloso rastillo que le ayudará a eliminar piedras, hojas, ramas y otros elementos incómodos en su jardín.",
-  "cantidad_en_stock": 15,
-  "precio_venta": 12,
-  "precio_proveedor": 11
- },
- {
-  "codigo_producto": "30310",
-  "nombre": "Azadón",
-  "gama": "Herramientas",
-  "dimensiones": "0,168",
-  "proveedor": "HiperGarden Tools",
-  "descripcion": "Longitud:24cm. Herramienta fabricada en acero y pintura epoxi,alargando su durabilidad y preveniendo la corrosión.Diseño pensado para el ahorro de trabajo.",
-  "cantidad_en_stock": 15,
-  "precio_venta": 12,
-  "precio_proveedor": 11
- },
- {
+{
   "codigo_producto": "AR-001",
   "nombre": "Ajedrea",
   "gama": "Aromáticas",
