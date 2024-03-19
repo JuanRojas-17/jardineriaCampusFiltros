@@ -5,6 +5,11 @@ from tabulate import tabulate
 import re
 import modules.getProducto as gP
 
+def conexionProductojson():
+      peticion=requests.get("http://192.168.10.23:5007") 
+      Informacion=peticion.json()  
+      return Informacion  
+
 
 def postProducto():
     # json-server storage/pedido.json -b 5501
@@ -68,7 +73,11 @@ def postProducto():
             print("Error:", error)
             print("Por favor, ingrese los datos correctamente.")
 
-    print("Producto ingresado con éxito:", producto)
+    headers = {'Content-type': 'application/json', 'charset': 'UTF-8'}
+    peticion = requests.post("http://192.168.10.23:5007",headers=headers, data=json.dumps(producto, indent=4).encode("UTF-8"))
+    res = peticion.json()
+    res["Mensaje"] = "Producto Guardado"
+    return [res]
 
 if __name__ == "__main__":
     postProducto()
@@ -93,7 +102,7 @@ if __name__ == "__main__":
 def deleteProducto(id):
     data = gP.getProductoCodigo(id)
     if(len(data)):
-        peticion = requests.delete(f"http://192.168.10.13:5501/productos/{id}")
+        peticion = requests.delete(f"http://192.168.10.23:5007/{id}")
         if(peticion.status_code == 204):
             data.append({"message": "producto eliminado correctamete"})
             return{
@@ -122,7 +131,8 @@ def menu():
                                                                                                                    /_/                                                  
 
 
-                                                    1. Administrar productos
+                                                    1. Agregar productos
+                                                    2. Eliminar productos
                                                     0. Atras
 
 
@@ -134,6 +144,10 @@ def menu():
               if(opcion == 1):
                print(tabulate(postProducto(), headers="keys", tablefmt="github"))
                input("Presione una tecla para continuar: ")
+              elif(opcion == 2):
+               idProducto = int(input("Ingrese la id del producto: "))
+               print(tabulate(deleteProducto(idProducto), headers="keys", tablefmt="github"))
+               input("Presione una tecla para continuar: ")  
               elif(opcion == 0):
                break
 

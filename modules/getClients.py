@@ -4,7 +4,7 @@ import re
 import json
 
 def dataClientes():
-    peticion = requests.get("http://192.168.10.13:5502")
+    peticion = requests.get("http://192.168.10.23:5001")
     data = peticion.json()
     return data
 
@@ -83,13 +83,13 @@ def getAllInformacionCodigoEmpleado(codigo):
     data = dataClientes()
     for val in data:
         dataclient = {
-            "codigo_empleado_rep_ventas": val.get('codigo_empleado_rep_ventas'),
+            "codigo_cliente": val.get('codigo_cliente'),
             "nombre_cliente": val.get('nombre_cliente'),
             "nombre_contacto": val.get('nombre_contacto'),
             "apellido_contacto": val.get("apellido_contacto"),
             "telefono": val.get('telefono'),
             "fax": val.get('fax')}
-        if(val.get('codigo_') == codigo):
+        if(val.get('codigo_cliente') == codigo):
             empleadoCodigo.append(dataclient)
     return empleadoCodigo
 

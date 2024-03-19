@@ -5,6 +5,11 @@ from tabulate import tabulate
 import re
 import modules.getPagos as gPa
 
+def conexionPagosjson():
+      peticion=requests.get("http://192.168.10.23:5008") 
+      Informacion=peticion.json()  
+      return Informacion  
+
 def postPago():
     # json-server storage/pedido.json -b 5505
     pago = {}
@@ -37,10 +42,33 @@ def postPago():
             print("Error:", error)
             print("Por favor, ingrese los datos correctamente.")
 
-    print("Pago ingresado con éxito:", pago)
+    headers = {'Content-type': 'application/json', 'charset': 'UTF-8'}
+    peticion = requests.post("http://192.168.10.23:5008",headers=headers, data=json.dumps(pago, indent=4).encode("UTF-8"))
+    res = peticion.json()
+    res["Mensaje"] = "Pago Guardado"
+    return [res]
 
 if __name__ == "__main__":
     postPago()
+
+def deletePago(id):
+    data = gPa.getPagoCodigo(id)
+    if(len(data)):
+        peticion = requests.delete(f"http://192.168.10.23:5008/{id}")
+        if(peticion.status_code == 204):
+            data.append({"message": "Pago eliminado correctamete"})
+            return{
+                "body": data,
+                "status": peticion.status_code,
+            }
+    else:
+        return {
+            "body":[{
+                "message":"Pago no encontrado",
+                "id": id
+            }],
+            "status": 400,
+        }
 
 def menu():
  while True:
@@ -53,7 +81,8 @@ def menu():
                                                                                                                    /_/          /____/              
   
 
-                                                            1. Administrar pagos
+                                                            1. Agregar pagos
+                                                            2. Eliminar pagos
                                                             0. Regresar
 
 
@@ -67,6 +96,10 @@ def menu():
          if(opcion>=0 and opcion<=6):
               if(opcion == 1):
                print(tabulate(postPago(), headers="keys", tablefmt="github"))
+               input("Presione una tecla para continuar: ")
+              elif(opcion == 2):
+               idPago = int(input("Ingrese la id del pago: "))
+               print(tabulate(deletePago(idPago), headers="keys", tablefmt="github"))
                input("Presione una tecla para continuar: ")
               elif(opcion == 0):
                break

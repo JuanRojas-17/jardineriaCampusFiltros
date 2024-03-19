@@ -3,7 +3,12 @@ import requests
 import os
 from tabulate import tabulate
 import re
-# 5502
+import modules.getClients as gCl
+
+def conexionClientejson():
+      peticion=requests.get("http://192.168.10.23:5001") 
+      Informacion=peticion.json()  
+      return Informacion     
 
 def postClientes():
     cliente = {}
@@ -56,7 +61,7 @@ def postClientes():
                 raise ValueError("El país del cliente no puede estar vacío.")
             cliente["pais"] = pais
 
-            codigo_postal = input("12. Ingrese el código postal del cliente: ")
+            codigo_postal = input("12. Ingrese el código postal del cliente(5 digitos): ")
             if not codigo_postal or len(codigo_postal) != 5:
                 raise ValueError("El código postal del cliente debe tener 5 dígitos.")
             cliente["codigo_postal"] = codigo_postal
@@ -75,11 +80,33 @@ def postClientes():
             print("Error:", error)
             print("Por favor, siga las instrucciones y asegúrese de ingresar los datos correctamente.")
 
-    print("\nDatos del cliente ingresados con éxito. Aquí están los detalles:")
-    print(cliente)
+    headers = {'Content-type': 'application/json', 'charset': 'UTF-8'}
+    peticion = requests.post("http://192.168.10.23:5001",headers=headers, data=json.dumps(cliente, indent=4).encode("UTF-8"))
+    res = peticion.json()
+    res["Mensaje"] = "Cliente Guardado"
+    return [res]
 
 if __name__ == "__main__":
     postClientes()
+
+def deleteCliente(id):
+    data = gCl.getClienteCodigo(id)
+    if(len(data)):
+        peticion = requests.delete(f"http://192.168.10.23:5001/{id}")
+        if(peticion.status_code == 204):
+            data.append({"message": "Cliente eliminado correctamete"})
+            return{
+                "body": data,
+                "status": peticion.status_code,
+            }
+    else:
+        return {
+            "body":[{
+                "message":"Cliente no encontrado",
+                "id": id
+            }],
+            "status": 400,
+        }
 
 def menu():
  while True:
@@ -94,7 +121,8 @@ def menu():
 
 
 
-                                                    1. Administrar clientes
+                                                    1. Agregar clientes
+                                                    2. Eliminar clientes
                                                     0. Atras
 
 
@@ -105,6 +133,10 @@ def menu():
          if(opcion>=0 and opcion<=6):
               if(opcion == 1):
                print(tabulate(postClientes(), headers="keys", tablefmt="github"))
+               input("Presione una tecla para continuar: ")
+              elif(opcion == 2):
+               idCliente = int(input("Ingrese la id del cliente: "))
+               print(tabulate(deleteCliente(idCliente), headers="keys", tablefmt="github"))
                input("Presione una tecla para continuar: ")
               elif(opcion == 0):
                break

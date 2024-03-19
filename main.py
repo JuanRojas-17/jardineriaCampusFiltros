@@ -1,4 +1,8 @@
 # from tabulate import tabulate
+#activar desde la terminal
+"""
+json-server storage/cliente.json -b 5001 & json-server storage/oficina.json -b 5002 & json-server storage/empleado.json -b 5003 & json-server storage/pedido.json -b 5004 & json-server storage/detalle_pedido.json -b 5005 & json-server storage/gama_producto.json -b 5006 & json-server storage/producto.json -b 5007 & json-server storage/pago.json -b 5008
+"""
 import modules.getEmpleados as empleado
 import modules.getClients as clientes
 import modules.getPedidos as pedidos

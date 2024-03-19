@@ -3,7 +3,12 @@ import requests
 import os
 from tabulate import tabulate
 import re
-# 5504
+import modules.getOficina as go
+
+def conexionOficinajson():
+      peticion=requests.get("http://192.168.10.23:5002") 
+      Informacion=peticion.json()  
+      return Informacion  
 
 def postOficina():
     oficina = {}
@@ -53,11 +58,33 @@ def postOficina():
             print("Error:", error)
             print("Por favor, siga las instrucciones y asegúrese de ingresar los datos correctamente.")
 
-    print("\nOficina ingresada con éxito. Aquí están los detalles de la oficina: ")
-    print(oficina)
+    headers = {'Content-type': 'application/json', 'charset': 'UTF-8'}
+    peticion = requests.post("http://192.168.10.23:5002",headers=headers, data=json.dumps(oficina, indent=4).encode("UTF-8"))
+    res = peticion.json()
+    res["Mensaje"] = "Oficina Guardada"
+    return [res]
 
 if __name__ == "__main__":
     postOficina()
+
+def deleteOficina(id):
+    data = go.getOficinaCodigo(id)
+    if(len(data)):
+        peticion = requests.delete(f"http://192.168.10.23:5002/{id}")
+        if(peticion.status_code == 204):
+            data.append({"message": "Oficina eliminada correctamete"})
+            return{
+                "body": data,
+                "status": peticion.status_code,
+            }
+    else:
+        return {
+            "body":[{
+                "message":"Oficina no encontrada",
+                "id": id
+            }],
+            "status": 400,
+        }
 
 def menu():
  while True:
@@ -71,7 +98,8 @@ def menu():
                                                                                                                                                                     
 
 
-                                                    1. Administrar oficinas
+                                                    1. Agregar oficinas
+                                                    2. Eliminar oficinas
                                                     0. Atras
 
 
@@ -82,6 +110,10 @@ def menu():
          if(opcion>=0 and opcion<=6):
               if(opcion == 1):
                print(tabulate(postOficina(), headers="keys", tablefmt="github"))
+               input("Presione una tecla para continuar: ")
+              elif(opcion == 2):
+               idOficina = int(input("Ingrese la id de la oficina: "))
+               print(tabulate(deleteOficina(idOficina), headers="keys", tablefmt="github"))
                input("Presione una tecla para continuar: ")
               elif(opcion == 0):
                break

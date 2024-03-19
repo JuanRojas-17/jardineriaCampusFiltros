@@ -4,7 +4,7 @@ import re
 import json
 
 def dataOficina():
-    peticion = requests.get("http://192.168.10.13:5504")
+    peticion = requests.get("http://192.168.10.13:5002")
     data = peticion.json()
     return data
 

@@ -3,6 +3,12 @@ import requests
 import os
 from tabulate import tabulate
 import re
+import modules.getGamas as gGa
+
+def conexionGamasjson():
+      peticion=requests.get("http://192.168.10.23:5006") 
+      Informacion=peticion.json()  
+      return Informacion  
 
 def postGamas():
     gama = {}
@@ -30,11 +36,33 @@ def postGamas():
             print("Error:", error)
             print("Por favor, siga las instrucciones y asegúrese de ingresar los datos correctamente.")
 
-    print("\nDatos de la gama ingresados con éxito. Aquí están los detalles:")
-    print(gama)
+    headers = {'Content-type': 'application/json', 'charset': 'UTF-8'}
+    peticion = requests.post("http://192.168.10.23:5006",headers=headers, data=json.dumps(gama, indent=4).encode("UTF-8"))
+    res = peticion.json()
+    res["Mensaje"] = "Gama Guardada"
+    return [res]
 
 if __name__ == "__main__":
     postGamas()
+
+def deleteGama(id):
+    data = gGa.getGamaCodigo(id)
+    if(len(data)):
+        peticion = requests.delete(f"http://192.168.10.23:5006/{id}")
+        if(peticion.status_code == 204):
+            data.append({"message": "Gama eliminada correctamete"})
+            return{
+                "body": data,
+                "status": peticion.status_code,
+            }
+    else:
+        return {
+            "body":[{
+                "message":"Gama no encontrada",
+                "id": id
+            }],
+            "status": 400,
+        }
 
 def menu():
  while True:
@@ -49,7 +77,8 @@ def menu():
   
 
 
-                                                    1. Administrar gamas
+                                                    1. Agregar gamas
+                                                    2. Eliminar gamas
                                                     0. Atras
 
 
@@ -60,6 +89,10 @@ def menu():
          if(opcion>=0 and opcion<=6):
               if(opcion == 1):
                print(tabulate(postGamas(), headers="keys", tablefmt="github"))
+               input("Presione una tecla para continuar: ")
+              elif(opcion == 2):
+               idGama = int(input("Ingrese la id de la gama: "))
+               print(tabulate(deleteGama(idGama), headers="keys", tablefmt="github"))
                input("Presione una tecla para continuar: ")
               elif(opcion == 0):
                break

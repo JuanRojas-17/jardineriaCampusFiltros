@@ -3,7 +3,12 @@ import requests
 import os
 from tabulate import tabulate
 import re
-# 5503
+import modules.getEmpleados as ge
+
+def conexionEmpleadojson():
+      peticion=requests.get("http://192.168.10.23:5003") 
+      Informacion=peticion.json()  
+      return Informacion  
 
 def postEmpleados():
     empleado = {}
@@ -56,11 +61,33 @@ def postEmpleados():
             print("Error:", error)
             print("Por favor, siga las instrucciones y asegúrese de ingresar los datos correctamente.")
 
-    print("\nDatos del empleado ingresados con éxito. Aquí están los detalles:")
-    print(empleado)
+    headers = {'Content-type': 'application/json', 'charset': 'UTF-8'}
+    peticion = requests.post("http://192.168.10.23:5003",headers=headers, data=json.dumps(empleado, indent=4).encode("UTF-8"))
+    res = peticion.json()
+    res["Mensaje"] = "Empleado Guardado"
+    return [res]
 
 if __name__ == "__main__":
     postEmpleados()
+
+def deleteEmpleado(id):
+    data = ge.getEmpleadoCodigo(id)
+    if(len(data)):
+        peticion = requests.delete(f"http://192.168.10.23:5003/{id}")
+        if(peticion.status_code == 204):
+            data.append({"message": "Empleado eliminado correctamete"})
+            return{
+                "body": data,
+                "status": peticion.status_code,
+            }
+    else:
+        return {
+            "body":[{
+                "message":"Empleado no encontrado",
+                "id": id
+            }],
+            "status": 400,
+        }
 
 def menu():
  while True:
@@ -75,7 +102,8 @@ def menu():
  
 
 
-                                                    1. Administrar empleados
+                                                    1. Agregar empleados
+                                                    2. Eliminar empleados
                                                     0. Atras
 
 
@@ -86,6 +114,10 @@ def menu():
          if(opcion>=0 and opcion<=6):
               if(opcion == 1):
                print(tabulate(postEmpleados(), headers="keys", tablefmt="github"))
+               input("Presione una tecla para continuar: ")
+              elif(opcion == 2):
+               idEmpleado = int(input("Ingrese la id del empleado: "))
+               print(tabulate(deleteEmpleado(idEmpleado), headers="keys", tablefmt="github"))
                input("Presione una tecla para continuar: ")
               elif(opcion == 0):
                break

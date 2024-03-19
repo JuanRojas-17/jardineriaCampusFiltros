@@ -7,7 +7,7 @@ import os
 import re
 
 def dataPagos():
-    peticion = requests.get("http://192.168.10.13:5505")
+    peticion = requests.get("http://192.168.10.23:5008")
     data = peticion.json()
     return data
 
@@ -53,8 +53,8 @@ def menu():
          opcion = int(opcion)
          if(opcion>=0 and opcion<=2):
             if(opcion == 1):
-                print(getAllPagos2008Paypal())
+                print(tabulate(getAllPagos2008Paypal()))
             elif(opcion == 2):
-                print(getAllTiposDePagos())
+                print(tabulate(getAllTiposDePagos()))
             elif(opcion == 0):
                 break

@@ -5,6 +5,11 @@ from tabulate import tabulate
 import re
 import modules.getPedidos as gPe
 
+def conexionPedidosjson():
+      peticion=requests.get("http://192.168.10.23:5004") 
+      Informacion=peticion.json()  
+      return Informacion  
+
 def postPedidos():
     # json-server storage/pedido.json -b 5506
     pedido = {}
@@ -59,10 +64,33 @@ def postPedidos():
             print("Error:", error)
             print("Por favor, ingrese los datos correctamente.")
 
-    print("Pedido ingresado con éxito:", pedido)
+    headers = {'Content-type': 'application/json', 'charset': 'UTF-8'}
+    peticion = requests.post("http://192.168.10.23:5004",headers=headers, data=json.dumps(pedido, indent=4).encode("UTF-8"))
+    res = peticion.json()
+    res["Mensaje"] = "Pedido Guardado"
+    return [res]
 
 if __name__ == "__main__":
     postPedidos()
+
+def deletePedido(id):
+    data = gPe.getPedidoCodigo(id)
+    if(len(data)):
+        peticion = requests.delete(f"http://192.168.10.23:5004/{id}")
+        if(peticion.status_code == 204):
+            data.append({"message": "Pedido eliminado correctamete"})
+            return{
+                "body": data,
+                "status": peticion.status_code,
+            }
+    else:
+        return {
+            "body":[{
+                "message":"Pedido no encontrado",
+                "id": id
+            }],
+            "status": 400,
+        }
 
 def menu():
  while True:
@@ -74,7 +102,8 @@ def menu():
 /_/  |_\__,_/_/ /_/ /_/_/_/ /_/_/____/\__/_/   \__,_/\__,_/\____/_/      \__,_/\__,_/\__/\____/____/   \__,_/\___/  / .___/\___/\__,_/_/\__,_/\____/____/  
                                                                                                                    /_/                                     
 
-                                                            1. Administrar pedidos
+                                                            1. Agregar pedidos
+                                                            2. Eliminar pedidos
                                                             0. Regresar
 
 
@@ -88,6 +117,10 @@ def menu():
          if(opcion>=0 and opcion<=6):
               if(opcion == 1):
                print(tabulate(postPedidos(), headers="keys", tablefmt="github"))
+               input("Presione una tecla para continuar: ")
+              elif(opcion == 2):
+               idPedido = int(input("Ingrese la id del pedido: "))
+               print(tabulate(deletePedido(idPedido), headers="keys", tablefmt="github"))
                input("Presione una tecla para continuar: ")
               elif(opcion == 0):
                break

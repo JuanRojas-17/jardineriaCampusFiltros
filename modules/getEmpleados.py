@@ -5,7 +5,7 @@ import re
 
 
 def dataEmpleados():
-    peticion = requests.get("http://192.168.10.13:5503")
+    peticion = requests.get("http://192.168.10.23:5003")
     data = peticion.json()
     return data
 
