@@ -6,7 +6,7 @@ import re
 import modules.getEmpleados as ge
 
 def conexionEmpleadojson():
-      peticion=requests.get("http://192.168.10.23:5003") 
+      peticion=requests.get("http://154.38.171.54:5003/empleados") 
       Informacion=peticion.json()  
       return Informacion  
 
@@ -62,7 +62,7 @@ def postEmpleados():
             print("Por favor, siga las instrucciones y asegúrese de ingresar los datos correctamente.")
 
     headers = {'Content-type': 'application/json', 'charset': 'UTF-8'}
-    peticion = requests.post("http://192.168.10.23:5003",headers=headers, data=json.dumps(empleado, indent=4).encode("UTF-8"))
+    peticion = requests.post("http://154.38.171.54:5003/empleados",headers=headers, data=json.dumps(empleado, indent=4).encode("UTF-8"))
     res = peticion.json()
     res["Mensaje"] = "Empleado Guardado"
     return [res]
@@ -73,7 +73,7 @@ if __name__ == "__main__":
 def deleteEmpleado(id):
     data = ge.getEmpleadoCodigo(id)
     if(len(data)):
-        peticion = requests.delete(f"http://192.168.10.23:5003/{id}")
+        peticion = requests.delete(f"http://154.38.171.54:5003/empleados/{id}")
         if(peticion.status_code == 204):
             data.append({"message": "Empleado eliminado correctamete"})
             return{

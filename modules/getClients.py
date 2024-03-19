@@ -4,7 +4,7 @@ import re
 import json
 
 def dataClientes():
-    peticion = requests.get("http://192.168.10.23:5001")
+    peticion = requests.get("http://154.38.171.54:5001/cliente")
     data = peticion.json()
     return data
 

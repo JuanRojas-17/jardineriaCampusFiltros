@@ -5,7 +5,7 @@ from tabulate import tabulate
 import re
 
 def dataPedidos():
-    peticion = requests.get("http://192.168.10.23:5004")
+    peticion = requests.get("http://154.38.171.54:5007/pedidos")
     data = peticion.json()
     return data
 

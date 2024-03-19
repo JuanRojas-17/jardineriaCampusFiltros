@@ -5,12 +5,12 @@ import os
 import re
 
 def getAllData():
-    peticion = requests.get("http://192.168.10.23:5007")
+    peticion = requests.get("http://154.38.171.54:5008/productos")
     data = peticion.json()
     return data
 
 def getProductoCodigo(codigo):
-       peticion = requests.get(f"http://192.168.10.23:5507/{codigo}")
+       peticion = requests.get(f"http://154.38.171.54:5008/productos/{codigo}")
        return(peticion.json()) if peticion.ok else []
 
 # Devuelve un listado con todos los productos que pertenecen a la gama Ornamentales
@@ -18,10 +18,10 @@ def getProductoCodigo(codigo):
 # mostrando en primer lugar los de mayor precio.
 
 
-def getProductoCodigo(codigo):
+def getProductCodigo(code):
     data = getAllData()
     for val in data:
-        if(val.get('codigo_producto') == codigo):
+        if(val.get('codigo_producto') == code):
             return [val]
 
 def getAllStocksPriceGama(gama, stock):

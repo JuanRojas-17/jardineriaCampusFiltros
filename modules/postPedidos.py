@@ -6,7 +6,7 @@ import re
 import modules.getPedidos as gPe
 
 def conexionPedidosjson():
-      peticion=requests.get("http://192.168.10.23:5004") 
+      peticion=requests.get("http://154.38.171.54:5007/pedidos") 
       Informacion=peticion.json()  
       return Informacion  
 
@@ -65,7 +65,7 @@ def postPedidos():
             print("Por favor, ingrese los datos correctamente.")
 
     headers = {'Content-type': 'application/json', 'charset': 'UTF-8'}
-    peticion = requests.post("http://192.168.10.23:5004",headers=headers, data=json.dumps(pedido, indent=4).encode("UTF-8"))
+    peticion = requests.post("http://154.38.171.54:5007/pedidos",headers=headers, data=json.dumps(pedido, indent=4).encode("UTF-8"))
     res = peticion.json()
     res["Mensaje"] = "Pedido Guardado"
     return [res]
@@ -76,7 +76,7 @@ if __name__ == "__main__":
 def deletePedido(id):
     data = gPe.getPedidoCodigo(id)
     if(len(data)):
-        peticion = requests.delete(f"http://192.168.10.23:5004/{id}")
+        peticion = requests.delete(f"http://154.38.171.54:5007/pedidos/{id}")
         if(peticion.status_code == 204):
             data.append({"message": "Pedido eliminado correctamete"})
             return{

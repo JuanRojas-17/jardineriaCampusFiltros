@@ -7,7 +7,7 @@ import os
 import re
 
 def dataPagos():
-    peticion = requests.get("http://192.168.10.23:5008")
+    peticion = requests.get("http://154.38.171.54:5006/pagos")
     data = peticion.json()
     return data
 

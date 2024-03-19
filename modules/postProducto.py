@@ -6,7 +6,7 @@ import re
 import modules.getProducto as gP
 
 def conexionProductojson():
-      peticion=requests.get("http://192.168.10.23:5007") 
+      peticion=requests.get("http://154.38.171.54:5008/productos") 
       Informacion=peticion.json()  
       return Informacion  
 
@@ -74,7 +74,7 @@ def postProducto():
             print("Por favor, ingrese los datos correctamente.")
 
     headers = {'Content-type': 'application/json', 'charset': 'UTF-8'}
-    peticion = requests.post("http://192.168.10.23:5007",headers=headers, data=json.dumps(producto, indent=4).encode("UTF-8"))
+    peticion = requests.post("http://154.38.171.54:5008/productos",headers=headers, data=json.dumps(producto, indent=4).encode("UTF-8"))
     res = peticion.json()
     res["Mensaje"] = "Producto Guardado"
     return [res]
@@ -102,7 +102,7 @@ if __name__ == "__main__":
 def deleteProducto(id):
     data = gP.getProductoCodigo(id)
     if(len(data)):
-        peticion = requests.delete(f"http://192.168.10.23:5007/{id}")
+        peticion = requests.delete(f"http://154.38.171.54:5008/productos/{id}")
         if(peticion.status_code == 204):
             data.append({"message": "producto eliminado correctamete"})
             return{
@@ -146,7 +146,7 @@ def menu():
                input("Presione una tecla para continuar: ")
               elif(opcion == 2):
                idProducto = int(input("Ingrese la id del producto: "))
-               print(tabulate(deleteProducto(idProducto), headers="keys", tablefmt="github"))
+               print(tabulate(deleteProducto(idProducto)["body"], headers="keys", tablefmt="github"))
                input("Presione una tecla para continuar: ")  
               elif(opcion == 0):
                break

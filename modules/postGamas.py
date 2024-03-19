@@ -6,7 +6,7 @@ import re
 import modules.getGamas as gGa
 
 def conexionGamasjson():
-      peticion=requests.get("http://192.168.10.23:5006") 
+      peticion=requests.get("http://154.38.171.54:5004/gama") 
       Informacion=peticion.json()  
       return Informacion  
 
@@ -37,7 +37,7 @@ def postGamas():
             print("Por favor, siga las instrucciones y asegúrese de ingresar los datos correctamente.")
 
     headers = {'Content-type': 'application/json', 'charset': 'UTF-8'}
-    peticion = requests.post("http://192.168.10.23:5006",headers=headers, data=json.dumps(gama, indent=4).encode("UTF-8"))
+    peticion = requests.post("http://154.38.171.54:5004/gama",headers=headers, data=json.dumps(gama, indent=4).encode("UTF-8"))
     res = peticion.json()
     res["Mensaje"] = "Gama Guardada"
     return [res]
@@ -48,7 +48,7 @@ if __name__ == "__main__":
 def deleteGama(id):
     data = gGa.getGamaCodigo(id)
     if(len(data)):
-        peticion = requests.delete(f"http://192.168.10.23:5006/{id}")
+        peticion = requests.delete(f"http://154.38.171.54:5004/gama/{id}")
         if(peticion.status_code == 204):
             data.append({"message": "Gama eliminada correctamete"})
             return{

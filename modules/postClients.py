@@ -6,7 +6,7 @@ import re
 import modules.getClients as gCl
 
 def conexionClientejson():
-      peticion=requests.get("http://192.168.10.23:5001") 
+      peticion=requests.get("http://154.38.171.54:5001/cliente") 
       Informacion=peticion.json()  
       return Informacion     
 
@@ -81,7 +81,7 @@ def postClientes():
             print("Por favor, siga las instrucciones y asegúrese de ingresar los datos correctamente.")
 
     headers = {'Content-type': 'application/json', 'charset': 'UTF-8'}
-    peticion = requests.post("http://192.168.10.23:5001",headers=headers, data=json.dumps(cliente, indent=4).encode("UTF-8"))
+    peticion = requests.post("http://154.38.171.54:5001/cliente",headers=headers, data=json.dumps(cliente, indent=4).encode("UTF-8"))
     res = peticion.json()
     res["Mensaje"] = "Cliente Guardado"
     return [res]
@@ -92,7 +92,7 @@ if __name__ == "__main__":
 def deleteCliente(id):
     data = gCl.getClienteCodigo(id)
     if(len(data)):
-        peticion = requests.delete(f"http://192.168.10.23:5001/{id}")
+        peticion = requests.delete(f"http://154.38.171.54:5001/cliente/{id}")
         if(peticion.status_code == 204):
             data.append({"message": "Cliente eliminado correctamete"})
             return{

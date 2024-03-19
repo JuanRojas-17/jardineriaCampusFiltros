@@ -6,7 +6,7 @@ import re
 import modules.getOficina as go
 
 def conexionOficinajson():
-      peticion=requests.get("http://192.168.10.23:5002") 
+      peticion=requests.get("http://154.38.171.54:5005/oficinas") 
       Informacion=peticion.json()  
       return Informacion  
 
@@ -59,7 +59,7 @@ def postOficina():
             print("Por favor, siga las instrucciones y asegúrese de ingresar los datos correctamente.")
 
     headers = {'Content-type': 'application/json', 'charset': 'UTF-8'}
-    peticion = requests.post("http://192.168.10.23:5002",headers=headers, data=json.dumps(oficina, indent=4).encode("UTF-8"))
+    peticion = requests.post("http://154.38.171.54:5005/oficinas",headers=headers, data=json.dumps(oficina, indent=4).encode("UTF-8"))
     res = peticion.json()
     res["Mensaje"] = "Oficina Guardada"
     return [res]
@@ -70,7 +70,7 @@ if __name__ == "__main__":
 def deleteOficina(id):
     data = go.getOficinaCodigo(id)
     if(len(data)):
-        peticion = requests.delete(f"http://192.168.10.23:5002/{id}")
+        peticion = requests.delete(f"http://154.38.171.54:5005/oficinas/{id}")
         if(peticion.status_code == 204):
             data.append({"message": "Oficina eliminada correctamete"})
             return{

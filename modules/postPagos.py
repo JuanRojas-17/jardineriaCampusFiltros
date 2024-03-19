@@ -6,7 +6,7 @@ import re
 import modules.getPagos as gPa
 
 def conexionPagosjson():
-      peticion=requests.get("http://192.168.10.23:5008") 
+      peticion=requests.get("http://154.38.171.54:5006/pagos") 
       Informacion=peticion.json()  
       return Informacion  
 
@@ -43,7 +43,7 @@ def postPago():
             print("Por favor, ingrese los datos correctamente.")
 
     headers = {'Content-type': 'application/json', 'charset': 'UTF-8'}
-    peticion = requests.post("http://192.168.10.23:5008",headers=headers, data=json.dumps(pago, indent=4).encode("UTF-8"))
+    peticion = requests.post("http://154.38.171.54:5006/pagos",headers=headers, data=json.dumps(pago, indent=4).encode("UTF-8"))
     res = peticion.json()
     res["Mensaje"] = "Pago Guardado"
     return [res]
@@ -54,7 +54,7 @@ if __name__ == "__main__":
 def deletePago(id):
     data = gPa.getPagoCodigo(id)
     if(len(data)):
-        peticion = requests.delete(f"http://192.168.10.23:5008/{id}")
+        peticion = requests.delete(f"http://154.38.171.54:5006/pagos/{id}")
         if(peticion.status_code == 204):
             data.append({"message": "Pago eliminado correctamete"})
             return{

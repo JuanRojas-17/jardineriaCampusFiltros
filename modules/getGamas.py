@@ -5,7 +5,7 @@ from tabulate import tabulate
 
 def getAllGama():
     # json-server storage/producto.json -b 5502
-    peticion = requests.get("http://192.168.10.23:5006")
+    peticion = requests.get("http://154.38.171.54:5004/gama")
     data = peticion.json()
     return data
 
