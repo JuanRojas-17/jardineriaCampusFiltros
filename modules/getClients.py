@@ -18,6 +18,10 @@ def search():
         })
     return clienteName
 
+def getClienteCodigo(id):
+        peticion = requests.get(f"http://154.38.171.54:5001/cliente/{id}")
+        return(peticion.json()) if peticion.ok else []
+
 def getOneClienteCodigo(codigo):
     clientecode= []
     data = dataClientes()

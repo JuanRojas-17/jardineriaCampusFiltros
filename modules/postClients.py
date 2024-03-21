@@ -94,19 +94,61 @@ def deleteCliente(id):
     if(len(data)):
         peticion = requests.delete(f"http://154.38.171.54:5001/cliente/{id}")
         if(peticion.status_code == 204):
-            data.append({"message": "Cliente eliminado correctamete"})
-            return{
+            data.append({"message": "Cliente eliminado correctamente"})
+            return {
                 "body": data,
-                "status": peticion.status_code,
+                "status": peticion.status_code
             }
     else:
         return {
-            "body":[{
-                "message":"Cliente no encontrado",
+            "body": [{
+                "message": "Cliente no encontrado",
                 "id": id
             }],
-            "status": 400,
+            "status": 400
         }
+    
+def actualizarCliente(id):
+    clienteExistente = gCl.getClienteCodigo(id)
+    print(clienteExistente)
+    if len(clienteExistente) == 0:
+        return {"message": "Cliente no encontrado"}
+
+    cliente = {}
+    
+    print("Ingrese los nuevos datos del cliente:")
+    
+    cliente["codigo_cliente"] = int(input("Ingrese el nuevo código del cliente: "))
+    cliente["nombre_cliente"] = input("Ingrese el nuevo nombre del cliente: ")
+    cliente["nombre_contacto"] = input("Ingrese el nuevo nombre de contacto: ")
+    cliente["apellido_contacto"] = input("Ingrese el nuevo apellido de contacto: ")
+    cliente["telefono"] = input("Ingrese el nuevo número de teléfono: ")
+    cliente["fax"] = input("Ingrese el nuevo número de fax: ")
+    cliente["linea_direccion1"] = input("Ingrese la nueva línea de dirección 1: ")
+    cliente["linea_direccion2"] = input("Ingrese la nueva línea de dirección 2: ")
+    cliente["ciudad"] = input("Ingrese la nueva ciudad: ")
+    cliente["region"] = input("Ingrese la nueva región: ")
+    cliente["pais"] = input("Ingrese el nuevo país: ")
+    cliente["codigo_postal"] = input("Ingrese el nuevo código postal: ")
+    cliente["codigo_empleado_rep_ventas"] = input("Ingrese el nuevo código de empleado de representante de ventas: ")
+    cliente["limite_credito"] = input("Ingrese el nuevo límite de crédito: ")
+
+    clienteActualizado = {**clienteExistente, **cliente}
+    peticion = requests.put(f"http://154.38.171.54:5001/cliente/{id}", json=clienteActualizado)
+
+    if peticion.status_code == 200:
+        return {"message": "Cliente actualizado correctamente"}
+    else:
+        print(peticion.status_code)
+        return {"message": "Error al actualizar el cliente" }
+
+if __name__ == "__main__":
+    id_cliente = input("Ingrese el ID del cliente que desea actualizar: ")
+    resultado = actualizarCliente(id_cliente)
+    print(resultado)
+
+
+
 
 def menu():
  while True:
@@ -123,6 +165,7 @@ def menu():
 
                                                     1. Agregar clientes
                                                     2. Eliminar clientes
+                                                    3. Actualizar clientes
                                                     0. Atras
 
 
@@ -134,9 +177,15 @@ def menu():
               if(opcion == 1):
                print(tabulate(postClientes(), headers="keys", tablefmt="github"))
                input("Presione una tecla para continuar: ")
-              elif(opcion == 2):
+              elif opcion == 2:
                idCliente = int(input("Ingrese la id del cliente: "))
-               print(tabulate(deleteCliente(idCliente), headers="keys", tablefmt="github"))
+               resultado = deleteCliente(idCliente)
+               print("Cliente eliminado exitosamente")
                input("Presione una tecla para continuar: ")
+              elif (opcion == 3):
+                id_cliente = input("Ingrese el ID del cliente que desea actualizar: ")
+                resultado = actualizarCliente(id_cliente)
+                print(resultado)
+                input("Presione una tecla para continuar: ")
               elif(opcion == 0):
                break

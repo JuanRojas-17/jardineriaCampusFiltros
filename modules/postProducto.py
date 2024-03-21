@@ -82,45 +82,63 @@ def postProducto():
 if __name__ == "__main__":
     postProducto()
 
-   #     producto = {
-   #         "codigo_producto": input("Ingrese el codigo del producto: "),
-  #          "nombre": input("Ingrese el nomnbre del producto: "),
- #           "gama": gG.getAllNombre()[int(input("Seleccione la gama:\n"+"".join([f"\t{i}. {val}\n" for i, val in enumerate(gG.getAllNombre())])))],
-  #          "dimensiones": input("Ingrese las dimensiones del producto: "),
-  #          "proveedor": input("Ingrese el proveedor del producto: "),
-  #          "descripcion": input("Ingrese la descripcion del producto: "),
-  #          "cantidad_en_stock": int(input("Ingrese la cantidad en stock del producto: ")),
-  #          "precio_venta": int(input("Ingrese el precio de venta del producto: ")),
-  #          "precio_proveedor": int(input("Ingrese el precio del proveedor del prodcuto: "))
-  #      }
-
-   #     peticion = requests.post("http://172.16.102.108:5501", data=json.dumps(producto))
-    #    res = peticion.json()
-    #    res["Mensaje"] = "Producto Guardado"
-    #    return [res]
-
 def deleteProducto(id):
     data = gP.getProductoCodigo(id)
     if(len(data)):
         peticion = requests.delete(f"http://154.38.171.54:5008/productos/{id}")
         if(peticion.status_code == 204):
-            data.append({"message": "producto eliminado correctamete"})
-            return{
+            data.append({"message": "producto eliminado correctamente"})
+            return {
                 "body": data,
-                "status": peticion.status_code,
+                "status": peticion.status_code
             }
     else:
         return {
-            "body":[{
-                "message":"producto no encontrado",
+            "body": [{
+                "message": "producto no encontrado",
                 "id": id
             }],
-            "status": 400,
+            "status": 400
         }
+    
+def actualizarproducto(id):
+    productoExistente = gP.getProductoCodigo(id)
+    print(productoExistente)
+    if len(productoExistente) == 0:
+        return {"message": "producto no encontrado"}
+
+    producto = {}
+    
+    print("Ingrese los nuevos datos del producto:")
+    
+    producto["codigo_producto"] = input("Ingrese el nuevo código del producto: ")
+    producto["nombre"] = input("Ingrese el nuevo nombre del producto: ")
+    producto["gama"] = input("Ingrese la nueva gama del producto: ")
+    producto["dimensiones"] = input("Ingrese las nuevas dimensiones del producto: ")
+    producto["proveedor"] = input("Ingrese el nuevo proveedor del producto: ")
+    producto["descripcion"] = input("Ingrese la nueva descripción del producto: ")
+    producto["cantidadEnStock"] = int(input("Ingrese la nueva cantidad en stock del producto: "))
+    producto["precio_venta"] = float(input("Ingrese el nuevo precio de venta del producto: "))
+    producto["precio_proveedor"] = float(input("Ingrese el nuevo precio proveedor del producto: "))
+
+    productoActualizado = {**productoExistente, **producto}
+    peticion = requests.put(f"http://154.38.171.54:5008/productos/{id}", json=productoActualizado)
+
+    if peticion.status_code == 200:
+        return {"message": "producto actualizado correctamente"}
+    else:
+        print(peticion.status_code)
+        return {"message": "Error al actualizar el producto" }
+
+if __name__ == "__main__":
+    id_producto = input("Ingrese el ID del producto que desea actualizar: ")
+    resultado = actualizarproducto(id_producto)
+    print(resultado)
+
+    
 
 def menu():
  while True:
-    os.system("clear")
     print("""
 
     ___       __          _       _      __                 __                  __      __                    __                             __           __            
@@ -133,6 +151,7 @@ def menu():
 
                                                     1. Agregar productos
                                                     2. Eliminar productos
+                                                    3. Actualizar productos
                                                     0. Atras
 
 
@@ -145,9 +164,15 @@ def menu():
                print(tabulate(postProducto(), headers="keys", tablefmt="github"))
                input("Presione una tecla para continuar: ")
               elif(opcion == 2):
-               idProducto = int(input("Ingrese la id del producto: "))
-               print(tabulate(deleteProducto(idProducto)["body"], headers="keys", tablefmt="github"))
-               input("Presione una tecla para continuar: ")  
+               idproducto = int(input("Ingrese la id del producto: "))
+               resultado = deleteProducto(idproducto)
+               print("producto eliminado exitosamente")
+               input("Presione una tecla para continuar: ")
+              elif (opcion == 3):
+                id_producto = input("Ingrese el ID del producto que desea actualizar: ")
+                resultado = actualizarproducto(id_producto)
+                print(resultado)
+                input("Presione una tecla para continuar: ")
               elif(opcion == 0):
                break
 

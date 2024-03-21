@@ -9,20 +9,20 @@ def getAllData():
     data = peticion.json()
     return data
 
-def getProductoCodigo(codigo):
-       peticion = requests.get(f"http://154.38.171.54:5008/productos/{codigo}")
-       return(peticion.json()) if peticion.ok else []
+def getProductoCodigo(id):
+        peticion = requests.get(f"http://154.38.171.54:5008/productos/{id}")
+        return(peticion.json()) if peticion.ok else []
 
 # Devuelve un listado con todos los productos que pertenecen a la gama Ornamentales
 # y que tienen mas de 100 unidades en stock. El listado debera estar ordenado por su precio de venta,
 # mostrando en primer lugar los de mayor precio.
 
 
-def getProductCodigo(code):
-    data = getAllData()
-    for val in data:
-        if(val.get('codigo_producto') == code):
-            return [val]
+# def getProductoCodigo(id):
+#       data = getAllData()
+#       for val in data:
+#           if(val.get('codigo_producto') == id):
+#               return [val]
 
 def getAllStocksPriceGama(gama, stock):
     condiciones = []
