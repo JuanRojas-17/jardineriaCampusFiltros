@@ -69,6 +69,40 @@ def deletePago(id):
             }],
             "status": 400,
         }
+    
+def actualizarpago(id):
+    pagoExistente = gPa.getPagoCodigo(id)
+    print(pagoExistente)
+    if len(pagoExistente) == 0:
+        return {"message": "pago no encontrado"}
+
+    pago = {}
+    
+    print("Ingrese los nuevos datos del pago:")
+    
+    pago["codigo_pago"] = input("Ingrese el nuevo código del pago: ")
+    pago["nombre"] = input("Ingrese el nuevo nombre del pago: ")
+    pago["gama"] = input("Ingrese la nueva gama del pago: ")
+    pago["dimensiones"] = input("Ingrese las nuevas dimensiones del pago: ")
+    pago["proveedor"] = input("Ingrese el nuevo proveedor del pago: ")
+    pago["descripcion"] = input("Ingrese la nueva descripción del pago: ")
+    pago["cantidadEnStock"] = int(input("Ingrese la nueva cantidad en stock del pago: "))
+    pago["precio_venta"] = float(input("Ingrese el nuevo precio de venta del pago: "))
+    pago["precio_proveedor"] = float(input("Ingrese el nuevo precio proveedor del pago: "))
+
+    pagoActualizado = {**pagoExistente, **pago}
+    peticion = requests.put(f"http://154.38.171.54:5008/pagos/{id}", json=pagoActualizado)
+
+    if peticion.status_code == 200:
+        return {"message": "pago actualizado correctamente"}
+    else:
+        print(peticion.status_code)
+        return {"message": "Error al actualizar el pago" }
+
+if __name__ == "__main__":
+    id_pago = input("Ingrese el ID del pago que desea actualizar: ")
+    resultado = actualizarpago(id_pago)
+    print(resultado)
 
 def menu():
  while True:
@@ -83,6 +117,7 @@ def menu():
 
                                                             1. Agregar pagos
                                                             2. Eliminar pagos
+                                                            3. Actualizar pagos
                                                             0. Regresar
 
 
@@ -98,8 +133,14 @@ def menu():
                print(tabulate(postPago(), headers="keys", tablefmt="github"))
                input("Presione una tecla para continuar: ")
               elif(opcion == 2):
-               idPago = int(input("Ingrese la id del pago: "))
-               print(tabulate(deletePago(idPago), headers="keys", tablefmt="github"))
+               idpago = int(input("Ingrese la id del pago: "))
+               resultado = deletePago(idpago)
+               print("pago eliminado exitosamente")
                input("Presione una tecla para continuar: ")
+              elif (opcion == 3):
+                id_pago = input("Ingrese el ID del pago que desea actualizar: ")
+                resultado = actualizarpago(id_pago)
+                print(resultado)
+                input("Presione una tecla para continuar: ")
               elif(opcion == 0):
                break

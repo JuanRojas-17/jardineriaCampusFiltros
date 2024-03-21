@@ -8,6 +8,10 @@ def dataOficina():
     data = peticion.json()
     return data
 
+def getOficinaCodigo(id):
+        peticion = requests.get(f"http://154.38.171.54:5005/oficinas/{id}")
+        return(peticion.json()) if peticion.ok else []
+
 # Devuelve un listado con el codigo de
 # oficina y la ciudad donde hay oficinas.
 

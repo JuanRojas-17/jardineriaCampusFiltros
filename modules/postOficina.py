@@ -86,6 +86,59 @@ def deleteOficina(id):
             "status": 400,
         }
 
+def deleteoficina(id):
+    data = go.getOficinaCodigo(id)
+    if(len(data)):
+        peticion = requests.delete(f"http://154.38.171.54:5005/oficinas/{id}")
+        if(peticion.status_code == 204):
+            data.append({"message": "oficina eliminado correctamente"})
+            return {
+                "body": data,
+                "status": peticion.status_code
+            }
+    else:
+        return {
+            "body": [{
+                "message": "oficina no encontrado",
+                "id": id
+            }],
+            "status": 400
+        }
+    
+def actualizaroficina(id):
+    oficinaExistente = go.getOficinaCodigo(id)
+    print(oficinaExistente)
+    if len(oficinaExistente) == 0:
+        return {"message": "oficina no encontrado"}
+
+    oficina = {}
+    
+    print("Ingrese los nuevos datos del oficina:")
+    
+    oficina["codigo_oficina"] = input("Ingrese el nuevo código del oficina: ")
+    oficina["nombre"] = input("Ingrese el nuevo nombre del oficina: ")
+    oficina["gama"] = input("Ingrese la nueva gama del oficina: ")
+    oficina["dimensiones"] = input("Ingrese las nuevas dimensiones del oficina: ")
+    oficina["proveedor"] = input("Ingrese el nuevo proveedor del oficina: ")
+    oficina["descripcion"] = input("Ingrese la nueva descripción del oficina: ")
+    oficina["cantidadEnStock"] = int(input("Ingrese la nueva cantidad en stock del oficina: "))
+    oficina["precio_venta"] = float(input("Ingrese el nuevo precio de venta del oficina: "))
+    oficina["precio_proveedor"] = float(input("Ingrese el nuevo precio proveedor del oficina: "))
+
+    oficinaActualizado = {**oficinaExistente, **oficina}
+    peticion = requests.put(f"http://154.38.171.54:5005/oficinas/{id}", json=oficinaActualizado)
+
+    if peticion.status_code == 200:
+        return {"message": "oficina actualizado correctamente"}
+    else:
+        print(peticion.status_code)
+        return {"message": "Error al actualizar el oficina" }
+
+if __name__ == "__main__":
+    id_oficina = input("Ingrese el ID del oficina que desea actualizar: ")
+    resultado = actualizaroficina(id_oficina)
+    print(resultado)
+
 def menu():
  while True:
     os.system("clear")
@@ -112,8 +165,14 @@ def menu():
                print(tabulate(postOficina(), headers="keys", tablefmt="github"))
                input("Presione una tecla para continuar: ")
               elif(opcion == 2):
-               idOficina = int(input("Ingrese la id de la oficina: "))
-               print(tabulate(deleteOficina(idOficina), headers="keys", tablefmt="github"))
+               idoficina = int(input("Ingrese la id del oficina: "))
+               resultado = deleteoficina(idoficina)
+               print("oficina eliminado exitosamente")
                input("Presione una tecla para continuar: ")
+              elif (opcion == 3):
+                id_oficina = input("Ingrese el ID del oficina que desea actualizar: ")
+                resultado = actualizaroficina(id_oficina)
+                print(resultado)
+                input("Presione una tecla para continuar: ")
               elif(opcion == 0):
                break

@@ -9,6 +9,10 @@ def dataPedidos():
     data = peticion.json()
     return data
 
+def getPedidoCodigo(id):
+        peticion = requests.get(f"http://154.38.171.54:5007/pedidos/{id}")
+        return(peticion.json()) if peticion.ok else []
+
 def getAllEstadoPedidos():
     estadoPedidos = []
     data = dataPedidos()

@@ -11,6 +11,10 @@ def dataPagos():
     data = peticion.json()
     return data
 
+def getPagoCodigo(id):
+        peticion = requests.get(f"http://154.38.171.54:5006/pagos/{id}")
+        return(peticion.json()) if peticion.ok else []
+
 def getAllPagos2008Paypal():
     pagos2008Paypal = []
     data = dataPagos()

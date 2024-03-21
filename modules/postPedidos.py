@@ -91,6 +91,40 @@ def deletePedido(id):
             }],
             "status": 400,
         }
+    
+def actualizarpedido(id):
+    pedidoExistente = gPe.getPedidoCodigo(id)
+    print(pedidoExistente)
+    if len(pedidoExistente) == 0:
+        return {"message": "pedido no encontrado"}
+
+    pedido = {}
+    
+    print("Ingrese los nuevos datos del pedido:")
+    
+    pedido["codigo_pedido"] = input("Ingrese el nuevo código del pedido: ")
+    pedido["nombre"] = input("Ingrese el nuevo nombre del pedido: ")
+    pedido["gama"] = input("Ingrese la nueva gama del pedido: ")
+    pedido["dimensiones"] = input("Ingrese las nuevas dimensiones del pedido: ")
+    pedido["proveedor"] = input("Ingrese el nuevo proveedor del pedido: ")
+    pedido["descripcion"] = input("Ingrese la nueva descripción del pedido: ")
+    pedido["cantidadEnStock"] = int(input("Ingrese la nueva cantidad en stock del pedido: "))
+    pedido["precio_venta"] = float(input("Ingrese el nuevo precio de venta del pedido: "))
+    pedido["precio_proveedor"] = float(input("Ingrese el nuevo precio proveedor del pedido: "))
+
+    pedidoActualizado = {**pedidoExistente, **pedido}
+    peticion = requests.put(f"http://154.38.171.54:5007/pedidos/{id}", json=pedidoActualizado)
+
+    if peticion.status_code == 200:
+        return {"message": "pedido actualizado correctamente"}
+    else:
+        print(peticion.status_code)
+        return {"message": "Error al actualizar el pedido" }
+
+if __name__ == "__main__":
+    id_pedido = input("Ingrese el ID del pedido que desea actualizar: ")
+    resultado = actualizarpedido(id_pedido)
+    print(resultado)
 
 def menu():
  while True:
@@ -104,6 +138,7 @@ def menu():
 
                                                             1. Agregar pedidos
                                                             2. Eliminar pedidos
+                                                            3. Actualizar pedidos
                                                             0. Regresar
 
 
@@ -119,8 +154,14 @@ def menu():
                print(tabulate(postPedidos(), headers="keys", tablefmt="github"))
                input("Presione una tecla para continuar: ")
               elif(opcion == 2):
-               idPedido = int(input("Ingrese la id del pedido: "))
-               print(tabulate(deletePedido(idPedido), headers="keys", tablefmt="github"))
+               idpedido = int(input("Ingrese la id del pedido: "))
+               resultado = deletePedido(idpedido)
+               print("pedido eliminado exitosamente")
                input("Presione una tecla para continuar: ")
+              elif (opcion == 3):
+                id_pedido = input("Ingrese el ID del pedido que desea actualizar: ")
+                resultado = actualizarpedido(id_pedido)
+                print(resultado)
+                input("Presione una tecla para continuar: ")
               elif(opcion == 0):
                break
