@@ -25,25 +25,20 @@ def getProductoCodigo(id):
 #               return [val]
 
 def getAllStocksPriceGama(gama, stock):
-    condiciones = []
-    data = getAllData()
-    for val in data:
-        if(val.get("gama") == gama and val.get("cantidad_en_stock") >= stock):
-            condiciones.append(val)
+    peticion = requests.get(f"http://154.38.171.54:5008/productos?gama={gama}&cantidadEnStock_gte={stock}&_sort=-precio_venta")
+    condiciones = peticion.json()
 
-    def price(val):
-        return val.get("precio_venta")
-    condiciones.sort(key=price, reverse = True)
     for i, val in enumerate(condiciones):
-            condiciones[i] = {
+        condiciones[i] = {
                 "codigo": val.get("codigo_producto"),
+                "venta": val.get("precio_venta"),
                 "nombre": val.get("nombre"),
-                "gama": val.get("codigo_producto"),
+                "gama": val.get("gama"),
                 "dimensiones": val.get("dimensiones"),
                 "proveedor": val.get("proveedor"),
                 "descripcion": f'{val.get("descripcion")[:5]}...' if condiciones[i].get("descripcion") else None,
                 "stock": val.get("cantidad_en_stock"),
-                "base": val.get("precio_proveedor"),
+                "base": val.get("precio_proveedor")
             }
     return condiciones
 
