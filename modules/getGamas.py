@@ -9,6 +9,10 @@ def getAllGama():
     data = peticion.json()
     return data
 
+def getGamaCodigo(id):
+        peticion = requests.get(f"http://154.38.171.54:5004/gama/{id}")
+        return(peticion.json()) if peticion.ok else []
+
 def getAllNombre():
     gamaNombre = []
     data = getAllGama

@@ -80,15 +80,11 @@ def actualizarpago(id):
     
     print("Ingrese los nuevos datos del pago:")
     
-    pago["codigo_pago"] = input("Ingrese el nuevo código del pago: ")
-    pago["nombre"] = input("Ingrese el nuevo nombre del pago: ")
-    pago["gama"] = input("Ingrese la nueva gama del pago: ")
-    pago["dimensiones"] = input("Ingrese las nuevas dimensiones del pago: ")
-    pago["proveedor"] = input("Ingrese el nuevo proveedor del pago: ")
-    pago["descripcion"] = input("Ingrese la nueva descripción del pago: ")
-    pago["cantidadEnStock"] = int(input("Ingrese la nueva cantidad en stock del pago: "))
-    pago["precio_venta"] = float(input("Ingrese el nuevo precio de venta del pago: "))
-    pago["precio_proveedor"] = float(input("Ingrese el nuevo precio proveedor del pago: "))
+    pago["codigo_cliente"] = int(input("Ingrese el nuevo código del cliente: "))
+    pago["forma_pago"] = input("Ingrese la nueva forma del pago: ")
+    pago["id_transaccion"] = int(input("Ingrese el nuevo id de transaccion: "))
+    pago["fecha_pago"] = input("Ingrese la nueva fecha del pago(YY/MM/DD): ")
+    pago["total"] = input("Ingrese el nuevo total del pago: ")
 
     pagoActualizado = {**pagoExistente, **pago}
     peticion = requests.put(f"http://154.38.171.54:5008/pagos/{id}", json=pagoActualizado)

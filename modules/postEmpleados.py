@@ -89,6 +89,40 @@ def deleteEmpleado(id):
             "status": 400,
         }
 
+def actualizarempleado(id):
+    empleadoExistente = ge.getEmpleadoCodigo(id)
+    print(empleadoExistente)
+    if len(empleadoExistente) == 0:
+        return {"message": "empleado no encontrado"}
+
+    empleado = {}
+    
+    print("Ingrese los nuevos datos del empleado:")
+    
+    empleado["codigo_empleado"] = int(input("Ingrese el nuevo código del empleado: "))
+    empleado["nombre"] = input("Ingrese el nuevo nombre del empleado: ")
+    empleado["apellido1"] = input("Ingrese el apellido 1 del empleado: ")
+    empleado["apellido2"] = input("Ingrese apellido 2 del empleado: ")
+    empleado["extension"] = input("Ingrese la nueva extension del empleado: ")
+    empleado["email"] = input("Ingrese el nuevo email del empleado: ")
+    empleado["codigo_oficina"] = int(input("Ingrese el nuevo codigo de oficina del empleado: "))
+    empleado["codigo_jefe"] = int(input("Ingrese el nuevo codigo de jefe: "))
+    empleado["puesto"] = input("Ingrese el puesto del empleado: ")
+
+    empleadoActualizado = {**empleadoExistente, **empleado}
+    peticion = requests.put(f"http://154.38.171.54:5003/empleados/{id}", json=empleadoActualizado)
+
+    if peticion.status_code == 200:
+        return {"message": "empleado actualizado correctamente"}
+    else:
+        print(peticion.status_code)
+        return {"message": "Error al actualizar el empleado" }
+
+if __name__ == "__main__":
+    id_empleado = input("Ingrese el ID del empleado que desea actualizar: ")
+    resultado = actualizarempleado(id_empleado)
+    print(resultado)
+
 def menu():
  while True:
     os.system("clear")
@@ -104,6 +138,7 @@ def menu():
 
                                                     1. Agregar empleados
                                                     2. Eliminar empleados
+                                                    3. Actualizar empleados
                                                     0. Atras
 
 
@@ -116,8 +151,14 @@ def menu():
                print(tabulate(postEmpleados(), headers="keys", tablefmt="github"))
                input("Presione una tecla para continuar: ")
               elif(opcion == 2):
-               idEmpleado = int(input("Ingrese la id del empleado: "))
-               print(tabulate(deleteEmpleado(idEmpleado), headers="keys", tablefmt="github"))
+               idempleado = int(input("Ingrese la id del empleado: "))
+               resultado = deleteEmpleado(idempleado)
+               print("empleado eliminado exitosamente")
                input("Presione una tecla para continuar: ")
+              elif (opcion == 3):
+                id_empleado = input("Ingrese el ID del empleado que desea actualizar: ")
+                resultado = actualizarempleado(id_empleado)
+                print(resultado)
+                input("Presione una tecla para continuar: ")
               elif(opcion == 0):
                break

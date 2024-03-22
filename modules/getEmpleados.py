@@ -9,6 +9,10 @@ def dataEmpleados():
     data = peticion.json()
     return data
 
+def getEmpleadoCodigo(id):
+        peticion = requests.get(f"http://154.38.171.54:5003/empleados/{id}")
+        return(peticion.json()) if peticion.ok else []
+
 # Devuelve un lista con el nombre, apellidos y email
 # de los empleados cuyo jefe tiene un codigo de jefe igual a 7.
 

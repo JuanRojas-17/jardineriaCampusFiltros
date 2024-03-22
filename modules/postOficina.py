@@ -115,15 +115,14 @@ def actualizaroficina(id):
     
     print("Ingrese los nuevos datos del oficina:")
     
-    oficina["codigo_oficina"] = input("Ingrese el nuevo código del oficina: ")
-    oficina["nombre"] = input("Ingrese el nuevo nombre del oficina: ")
-    oficina["gama"] = input("Ingrese la nueva gama del oficina: ")
-    oficina["dimensiones"] = input("Ingrese las nuevas dimensiones del oficina: ")
-    oficina["proveedor"] = input("Ingrese el nuevo proveedor del oficina: ")
-    oficina["descripcion"] = input("Ingrese la nueva descripción del oficina: ")
-    oficina["cantidadEnStock"] = int(input("Ingrese la nueva cantidad en stock del oficina: "))
-    oficina["precio_venta"] = float(input("Ingrese el nuevo precio de venta del oficina: "))
-    oficina["precio_proveedor"] = float(input("Ingrese el nuevo precio proveedor del oficina: "))
+    oficina["codigo_oficina"] = int(input("Ingrese el nuevo código del oficina: "))
+    oficina["ciudad"] = input("Ingrese la nueva ciudad de la oficina: ")
+    oficina["pais"] = input("Ingrese el nuevo pais de la oficina: ")
+    oficina["region"] = input("Ingrese la nueva region de la oficina: ")
+    oficina["codigo_postal"] = int(input("Ingrese el nuevo codigo postal de la oficina: "))
+    oficina["telefono"] = int(input("Ingrese el nuevo telefono de la oficina: "))
+    oficina["linea_direccion1"] = input("Ingrese la nueva direccion1 de la oficina: ")
+    oficina["linea_direccion2"] = input("Ingrese la nueva direccion2 de la oficina: ")
 
     oficinaActualizado = {**oficinaExistente, **oficina}
     peticion = requests.put(f"http://154.38.171.54:5005/oficinas/{id}", json=oficinaActualizado)
@@ -153,6 +152,7 @@ def menu():
 
                                                     1. Agregar oficinas
                                                     2. Eliminar oficinas
+                                                    3. Actualizar oficinas
                                                     0. Atras
 
 

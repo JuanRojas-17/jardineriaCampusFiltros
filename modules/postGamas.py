@@ -63,6 +63,34 @@ def deleteGama(id):
             }],
             "status": 400,
         }
+    
+def actualizargama(id):
+    gamaExistente = gGa.getGamaCodigo(id)
+    print(gamaExistente)
+    if len(gamaExistente) == 0:
+        return {"message": "gama no encontrado"}
+
+    gama = {}
+    
+    print("Ingrese los nuevos datos de la gama:")
+    
+    gama["gama"] = input("Ingrese el nombre de la nueva gama: ")
+    gama["descripcion_texto"] = input("Ingrese la descripcion de la gama: ")
+    gama["imagen"] = ("null")
+
+    gamaActualizado = {**gamaExistente, **gama}
+    peticion = requests.put(f"http://154.38.171.54:5004/gama/{id}", json=gamaActualizado)
+
+    if peticion.status_code == 200:
+        return {"message": "gama actualizado correctamente"}
+    else:
+        print(peticion.status_code)
+        return {"message": "Error al actualizar la gama" }
+
+if __name__ == "__main__":
+    id_gama = input("Ingrese el ID de la gama que desea actualizar: ")
+    resultado = actualizargama(id_gama)
+    print(resultado)
 
 def menu():
  while True:
@@ -79,6 +107,7 @@ def menu():
 
                                                     1. Agregar gamas
                                                     2. Eliminar gamas
+                                                    3. Actualizar gamas
                                                     0. Atras
 
 
@@ -91,8 +120,14 @@ def menu():
                print(tabulate(postGamas(), headers="keys", tablefmt="github"))
                input("Presione una tecla para continuar: ")
               elif(opcion == 2):
-               idGama = int(input("Ingrese la id de la gama: "))
-               print(tabulate(deleteGama(idGama), headers="keys", tablefmt="github"))
+               idgama = int(input("Ingrese la id de la gama: "))
+               resultado = deleteGama(idgama)
+               print("gama eliminada exitosamente")
                input("Presione una tecla para continuar: ")
+              elif (opcion == 3):
+                id_gama = input("Ingrese el ID de la gama que desea actualizar: ")
+                resultado = actualizargama(id_gama)
+                print(resultado)
+                input("Presione una tecla para continuar: ")
               elif(opcion == 0):
                break
